@@ -19,7 +19,8 @@ RM = rm -f
 
 TARGET = push_swap
 
-SRCS_BASE = app.c game.c
+SRCS_BASE = app.c game.c \
+			libft.c libft_try_atoi.c libft_split.c
 SRCS = $(SRCS_BASE)
 OBJECTS_DIR = objs/
 OBJS = $(addprefix $(OBJECTS_DIR), $(SRCS_BASE:.c=.o))
