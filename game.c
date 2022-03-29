@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/29 21:46:41 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/30 03:30:01 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ static void	link_table(t_elem *table, size_t count)
 {
 	size_t	i;
 
-	if (i > 0)
+	if (count > 0)
 	{
 		table[0].prev = &table[count - 1];
+		i = 0;
 		while (i < count - 1)
 		{
 			table[i].next = &table[i + 1];

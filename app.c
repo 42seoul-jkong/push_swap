@@ -6,13 +6,13 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/29 18:54:46 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/30 03:21:06 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	on_exit(t_game *game, int number)
+static int	push_swap_on_exit(t_game *game, int number)
 {
 	if (number == 1)
 		write(STDERR_FILENO, "Error\n", 6);
@@ -78,18 +78,24 @@ static int	unique(t_game *game)
 {
 	size_t			i;
 	size_t			j;
-	unsigned int	rank; //TODO: ... 꼭 sort를 먼저 해야하는가?
+	unsigned int	rank;
 
 	i = 0;
 	while (i < game->count)
 	{
+		rank = 0;
 		j = 0;
 		while (j < i)
 		{
 			if (game->table[i].number == game->table[j].number)
 				return (0);
+			if (game->table[i].number > game->table[j].number)
+				rank++;
+			else
+				game->table[j].rank++;
 			j++;
 		}
+		game->table[i].rank = rank;
 		i++;
 	}
 	return (1);
@@ -106,8 +112,8 @@ int	main(int argc, char *argv[])
 		game.count += ft_split_count(argv[i++], " ");
 	game.table = ft_calloc(game.count, sizeof(t_elem));
 	if (!game.table || !fill(game.table, argc, argv) || !unique(&game))
-		return (on_exit(&game, 1));
+		return (push_swap_on_exit(&game, 1));
 	ready_game(&game);
 	do_game(&game);
-	return (on_exit(&game, 0));
+	return (push_swap_on_exit(&game, 0));
 }
