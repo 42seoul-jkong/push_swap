@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/29 16:23:57 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/29 18:54:46 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static int	unique(t_game *game)
 {
 	size_t			i;
 	size_t			j;
+	unsigned int	rank; //TODO: ... 꼭 sort를 먼저 해야하는가?
 
 	i = 0;
 	while (i < game->count)
@@ -106,6 +107,7 @@ int	main(int argc, char *argv[])
 	game.table = ft_calloc(game.count, sizeof(t_elem));
 	if (!game.table || !fill(game.table, argc, argv) || !unique(&game))
 		return (on_exit(&game, 1));
+	ready_game(&game);
 	do_game(&game);
 	return (on_exit(&game, 0));
 }

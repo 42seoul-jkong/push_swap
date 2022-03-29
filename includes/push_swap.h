@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/28 15:58:39 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/29 18:44:07 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_game
 	int		opt_visual;
 }	t_game;
 
+void	ready_game(t_game *game);
 void	do_game(t_game *game);
 
 void	*ft_memset(void *b, int c, size_t len);

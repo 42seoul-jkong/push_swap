@@ -14,7 +14,9 @@
 .PHONY: all clean fclean re
 
 CC = gcc
-CFLAGS = -I $(INCLUDES_DIR) $(addprefix -W, $(C_WARNING_FLAGS))
+CFLAGS = -I $(INCLUDES_DIR)
+C_WARNING_FLAGS = all extra error
+CFLAGS += $(addprefix -W, $(C_WARNING_FLAGS))
 RM = rm -f
 
 TARGET = push_swap
@@ -28,10 +30,10 @@ OBJS = $(addprefix $(OBJECTS_DIR), $(SRCS_BASE:.c=.o))
 INCLUDES_DIR = includes/
 HEADER_BASE = push_swap.h
 HDRS = $(addprefix $(INCLUDES_DIR), $(HEADER_BASE))
-C_WARNING_FLAGS = all extra error
 
-CFLAGS += -g3
-LNKFLAGS = -fsanitize=address
+C_DEBUG_FLAGS = -g3 -fsanitize=address
+CFLAGS += $(C_DEBUG_FLAGS)
+LDFLAGS += $(C_DEBUG_FLAGS)
 
 all: $(TARGET)	;
 clean:			;	$(RM) -r $(OBJECTS_DIR)
@@ -47,4 +49,4 @@ $(addprefix $(OBJECTS_DIR), %.o): %.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
 $(TARGET): $(OBJS)
-	$(CC) -o $@ $(LNKFLAGS) $^
+	$(CC) -o $@ $(LDFLAGS) $^
