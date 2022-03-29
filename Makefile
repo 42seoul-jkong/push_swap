@@ -30,6 +30,9 @@ HEADER_BASE = push_swap.h
 HDRS = $(addprefix $(INCLUDES_DIR), $(HEADER_BASE))
 C_WARNING_FLAGS = all extra error
 
+CFLAGS += -g3
+LNKFLAGS = -fsanitize=address
+
 all: $(TARGET)	;
 clean:			;	$(RM) -r $(OBJECTS_DIR)
 fclean: clean	;	$(RM) $(TARGET)
@@ -44,5 +47,4 @@ $(addprefix $(OBJECTS_DIR), %.o): %.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
 $(TARGET): $(OBJS)
-	echo "$(OBJS)"
-	$(CC) -o $@ $^
+	$(CC) -o $@ $(LNKFLAGS) $^

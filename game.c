@@ -6,8 +6,13 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/22 15:17:00 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/29 16:24:02 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	do_game(t_game *game)
+{
+	(void)game;
+}

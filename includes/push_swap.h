@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/25 16:18:12 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/28 15:58:39 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,10 @@ typedef struct s_game
 	t_elem	*sorted;
 	t_elem	*stack[STACK_TYPE_N];
 	int		opt_debug;
+	int		opt_visual;
 }	t_game;
+
+void	do_game(t_game *game);
 
 void	*ft_memset(void *b, int c, size_t len);
 int		ft_strcmp(const char *s1, const char *s2);

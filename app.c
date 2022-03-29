@@ -6,13 +6,11 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/25 16:18:07 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/29 16:23:57 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-#include <stdio.h>
 
 static int	on_exit(t_game *game, int number)
 {
@@ -27,16 +25,27 @@ static int	process_option(t_game *game, int argc, char *argv[])
 	int	i;
 
 	i = 1;
-	if (argc > i && ft_strcmp(argv[i], "-d"))
+	while (argc > i)
 	{
-		if (game)
-			game->opt_debug = 1;
-		i++;
+		if (ft_strcmp(argv[i], "--d") == 0)
+		{
+			if (game)
+				game->opt_debug = 1;
+			i++;
+		}
+		else if (ft_strcmp(argv[i], "--v") == 0)
+		{
+			if (game)
+				game->opt_visual = 1;
+			i++;
+		}
+		else
+			break ;
 	}
 	return (i);
 }
 
-static int	fill_table(t_elem *table, int argc, char *argv[])
+static int	fill(t_elem *table, int argc, char *argv[])
 {
 	int		i;
 	char	**split;
@@ -78,6 +87,7 @@ static int	unique(t_game *game)
 		{
 			if (game->table[i].number == game->table[j].number)
 				return (0);
+			j++;
 		}
 		i++;
 	}
@@ -94,7 +104,8 @@ int	main(int argc, char *argv[])
 	while (i < argc)
 		game.count += ft_split_count(argv[i++], " ");
 	game.table = ft_calloc(game.count, sizeof(t_elem));
-	if (!game.table || !fill(game.table, argc, argv) && !unique(&game))
+	if (!game.table || !fill(game.table, argc, argv) || !unique(&game))
 		return (on_exit(&game, 1));
+	do_game(&game);
 	return (on_exit(&game, 0));
 }
