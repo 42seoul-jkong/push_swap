@@ -6,13 +6,13 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 19:15:04 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/30 19:18:16 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static t_elem	*link_table(t_elem *table, size_t length)
+static t_elem	*_link_table(t_elem *table, size_t length)
 {
 	size_t	i;
 
@@ -60,7 +60,7 @@ void	visualize(const char *title, t_game *game)
 
 void	do_game(t_game *game)
 {
-	game->stack[OF_STACK_A] = link_table(game->table, game->length);
+	game->stack[OF_STACK_A] = _link_table(game->table, game->length);
 	game->count[OF_STACK_A] = game->length;
 	game->stack[OF_STACK_B] = NULL;
 	game->count[OF_STACK_B] = 0;

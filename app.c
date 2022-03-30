@@ -6,13 +6,13 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 14:56:52 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/30 19:18:50 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	push_swap_on_exit(t_game *game, int number)
+static int	_push_swap_on_exit(t_game *game, int number)
 {
 	if (number == 1)
 		write(STDERR_FILENO, "Error\n", 6);
@@ -20,7 +20,7 @@ static int	push_swap_on_exit(t_game *game, int number)
 	return (number);
 }
 
-static int	process_option(t_game *game, int argc, char *argv[])
+static int	_process_option(t_game *game, int argc, char *argv[])
 {
 	int	i;
 
@@ -45,14 +45,14 @@ static int	process_option(t_game *game, int argc, char *argv[])
 	return (i);
 }
 
-static int	fill(t_elem *table, int argc, char *argv[])
+static int	_fill(t_elem *table, int argc, char *argv[])
 {
 	int		i;
 	char	**split;
 	char	**str_table;
 	int		res_atoi;
 
-	i = process_option(NULL, argc, argv);
+	i = _process_option(NULL, argc, argv);
 	while (i > 0 && i < argc)
 	{
 		split = ft_split(argv[i++], " ");
@@ -74,7 +74,7 @@ static int	fill(t_elem *table, int argc, char *argv[])
 	return (i == argc);
 }
 
-static int	unique(t_game *game)
+static int	_unique(t_game *game)
 {
 	size_t			i;
 	size_t			j;
@@ -107,12 +107,12 @@ int	main(int argc, char *argv[])
 	int		i;
 
 	ft_memset(&game, 0, sizeof(game));
-	i = process_option(&game, argc, argv);
+	i = _process_option(&game, argc, argv);
 	while (i < argc)
 		game.length += ft_split_count(argv[i++], " ");
 	game.table = ft_calloc(game.length, sizeof(t_elem));
-	if (!game.table || !fill(game.table, argc, argv) || !unique(&game))
-		return (push_swap_on_exit(&game, 1));
+	if (!game.table || !_fill(game.table, argc, argv) || !_unique(&game))
+		return (_push_swap_on_exit(&game, 1));
 	do_game(&game);
-	return (push_swap_on_exit(&game, 0));
+	return (_push_swap_on_exit(&game, 0));
 }
