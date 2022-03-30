@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 21:15:20 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/30 22:26:26 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef enum e_stack_type
  */
 typedef enum e_operation
 {
+	NONE = -1,
+	NOP = 0,
 	FOR_A = 1,
 	FOR_B = 2,
 	FOR_SAME = FOR_A | FOR_B,
@@ -95,6 +97,15 @@ typedef enum e_operation
 	RRR = REVERSE | ROTATE | FOR_SAME
 }	t_operation;
 
+typedef enum e_gerr
+{
+	GAME_SUCCESS,
+	GAME_FAILURE_SORT,
+	GAME_FAILURE_A_COUNT,
+	GAME_FAILURE_B_COUNT,
+	GAME_FAILURE_UNKNOWN = -1,
+}	t_gerr;
+
 typedef struct s_game
 {
 	size_t	length;
@@ -109,12 +120,24 @@ typedef struct s_game
 ** game.c
 */
 void	do_game(t_game *game);
-void	do_op(t_game *game, t_operation op);
+void	write_op(t_game *game, t_operation op);
+
+/*
+** checker.c
+*/
+int		run_checker(t_game *game);
+t_gerr	check(t_game *game);
 
 /*
 ** operation.c
 */
 void	apply_op(t_game *game, t_operation op);
+
+/*
+** io.c
+*/
+int		getchar_safe(void);
+void	putchar_safe(char c);
 
 /*
 ** Forty-Two Library Functions (libft*.c)
