@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 22:15:13 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 01:07:16 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,75 +31,13 @@ static t_elem	*_link_table(t_elem *table, size_t length)
 	return (&table[0]);
 }
 
-#include <stdio.h>
-
-static void	___visualize(const char *title, t_game *game)
-{
-	printf("[ %s ]\n", title);
-	t_elem *e;
-	printf("\ta:");
-	e = game->stack[OF_STACK_A];
-	for (size_t i = 0; i < game->count[OF_STACK_A]; i++)
-	{
-		printf(" %d", e->number);
-		e = e->next;
-	}
-	printf("\n");
-	printf("\tb: ");
-	e = game->stack[OF_STACK_B];
-	for (size_t i = 0; i < game->count[OF_STACK_B]; i++)
-	{
-		printf(" %d", e->number);
-		e = e->next;
-	}
-	printf("\n");
-	printf("\n");
-}
-
-static void	___test_game(t_game *game)
-{
-	unsigned int	i;
-
-	___visualize("FIRST", game);
-	if (game->count[OF_STACK_A] >= 2)
-	{
-		i = game->stack[OF_STACK_A]->next->rank;
-		if (game->stack[OF_STACK_A]->rank > i)
-			write_op(game, SA);
-	}
-	___visualize("SECOND", game);
-	i = 0;
-	while (i < game->length)
-	{
-		if (game->stack[OF_STACK_A]->rank < game->length / 2)
-			write_op(game, PB);
-		else
-			write_op(game, RA);
-		i++;
-	}
-	___visualize("THIRD", game);
-	if (game->count[OF_STACK_A] >= 2)
-	{
-		i = game->stack[OF_STACK_A]->next->rank;
-		if (game->stack[OF_STACK_A]->rank > i)
-			write_op(game, SA);
-	}
-	if (game->count[OF_STACK_B] >= 2)
-	{
-		i = game->stack[OF_STACK_B]->next->rank;
-		if (game->stack[OF_STACK_B]->rank > i)
-			write_op(game, SB);
-	}
-	___visualize("FOURTH", game);
-}
-
 void	do_game(t_game *game)
 {
 	game->stack[OF_STACK_A] = _link_table(game->table, game->length);
 	game->count[OF_STACK_A] = game->length;
 	game->stack[OF_STACK_B] = NULL;
 	game->count[OF_STACK_B] = 0;
-	___test_game(game);
+	do_game_mini(game);
 }
 
 void	write_op(t_game *game, t_operation op)

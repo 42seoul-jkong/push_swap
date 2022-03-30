@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 22:26:26 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 01:07:07 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,20 @@ void	do_game(t_game *game);
 void	write_op(t_game *game, t_operation op);
 
 /*
+** game_mini.c
+*/
+void	do_game_mini(t_game *game);
+
+/*
 ** checker.c
 */
 int		run_checker(t_game *game);
 t_gerr	check(t_game *game);
+
+/*
+** visualize.c
+*/
+void	visualize(const char *title, t_game *game);
 
 /*
 ** operation.c
@@ -134,14 +144,9 @@ t_gerr	check(t_game *game);
 void	apply_op(t_game *game, t_operation op);
 
 /*
-** io.c
-*/
-int		getchar_safe(void);
-void	putchar_safe(char c);
-
-/*
 ** Forty-Two Library Functions (libft*.c)
 */
+size_t	ft_strlen(const char *s);
 void	*ft_memset(void *b, int c, size_t len);
 int		ft_strcmp(const char *s1, const char *s2);
 void	*ft_calloc(size_t count, size_t size);
@@ -149,5 +154,14 @@ int		ft_try_atoi(const char *str, int *out);
 size_t	ft_split_count(const char *s, const char *set);
 char	**ft_split(const char *s, const char *set);
 char	**ft_split_free(char **ptr);
+
+/*
+** safe_io.c
+*/
+int		get_safe(void *buf, size_t len);
+int		getchar_safe(void);
+void	put_safe(const void *buf, size_t len);
+void	putchar_safe(char c);
+void	putstr_safe(const char *str);
 
 #endif

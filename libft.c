@@ -6,11 +6,21 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:30:03 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/25 16:18:14 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 01:03:35 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 void	*ft_memset(void *b, int c, size_t len)
 {

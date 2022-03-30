@@ -21,9 +21,11 @@ RM = rm -f
 
 TARGET = push_swap
 
-SRCS_BASE = app.c game.c checker.c operation.c \
+SRCS_BASE = app.c checker.c \
+			game.c game_mini.c\
+			visualize.c operation.c \
 			libft.c libft_try_atoi.c libft_split.c \
-			io.c
+			safe_io.c
 SRCS = $(SRCS_BASE)
 OBJECTS_DIR = objs/
 OBJS = $(addprefix $(OBJECTS_DIR), $(SRCS_BASE:.c=.o))
