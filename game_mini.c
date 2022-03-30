@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 03:22:25 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 03:33:21 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	_do_game_3a(t_game *game)
 	else
 		op = SA;
 	write_op(game, op);
-	do_game_3a(game);
+	_do_game_3a(game);
 }
 
 static void	_do_game_3b(t_game *game)
@@ -77,7 +77,7 @@ static void	_do_game_3b(t_game *game)
 	else
 		op = SB;
 	write_op(game, op);
-	do_game_3b(game);
+	_do_game_3b(game);
 }
 
 /*
@@ -118,4 +118,8 @@ void	do_game_mini(t_game *game)
 			write_op(game, SB);
 	}
 	visualize("FOURTH", game);
+	_do_game_2(game, OF_STACK_A);
+	_do_game_2(game, OF_STACK_B);
+	_do_game_3a(game);
+	_do_game_3b(game);
 }
