@@ -6,13 +6,13 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 03:20:48 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 03:22:25 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	do_game_2(t_game *game, t_stack_type type)
+static void	_do_game_2(t_game *game, t_stack_type type)
 {
 	t_operation		op;
 	unsigned int	r0;
@@ -32,7 +32,7 @@ static void	do_game_2(t_game *game, t_stack_type type)
 	write_op(game, op);
 }
 
-static void	do_game_3a(t_game *game)
+static void	_do_game_3a(t_game *game)
 {
 	t_operation		op;
 	unsigned int	r0;
@@ -56,7 +56,7 @@ static void	do_game_3a(t_game *game)
 	do_game_3a(game);
 }
 
-static void	do_game_3b(t_game *game)
+static void	_do_game_3b(t_game *game)
 {
 	t_operation		op;
 	unsigned int	r0;
@@ -88,7 +88,12 @@ void	do_game_mini(t_game *game)
 	unsigned int	i;
 
 	visualize("FIRST", game);
-	do_game_2(game, OF_STACK_A);
+	if (game->count[OF_STACK_A] >= 2)
+	{
+		i = game->stack[OF_STACK_A]->next->rank;
+		if (game->stack[OF_STACK_A]->rank > i)
+			write_op(game, SA);
+	}
 	visualize("SECOND", game);
 	i = 0;
 	while (i < game->length)
