@@ -6,20 +6,19 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 00:47:09 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 01:04:51 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 01:43:49 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void putnbr_int(int n)
+static void	putnbr_int(int n)
 {
 	const int	sign = n < 0;
-	char		buf[12];
+	char		buf[11];
 	int			i;
 
 	i = sizeof(buf);
-	buf[--i] = '\0';
 	if (!n)
 		buf[--i] = '0';
 	while (n)
@@ -27,9 +26,9 @@ static void putnbr_int(int n)
 		buf[--i] = '0' + (1 - (sign << 1)) * (n % 10);
 		n /= 10;
 	}
-	if (sign == -1)
+	if (sign)
 		buf[--i] = '-';
-	putstr_safe(buf + i);
+	put_safe(buf + i, sizeof(buf) - i);
 }
 
 void	visualize(const char *title, t_game *game)

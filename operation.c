@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 14:25:02 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 21:07:24 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 01:46:44 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static void	_apply_swap(t_game *game, t_stack_type type)
 	first = game->stack[type];
 	second = first->next;
 	game->stack[type] = second;
+	second->next->prev = first;
+	first->prev->next = second;
 	second->prev = first->prev;
 	first->next = second->next;
 	second->next = first;
@@ -44,8 +46,8 @@ static t_elem	*_apply_pop(t_game *game, t_stack_type type)
 	else
 		game->stack[type] = NULL;
 	game->count[type]--;
-	result->prev = result;
-	result->next = result;
+	result->prev = NULL;
+	result->next = NULL;
 	return (result);
 }
 
@@ -62,6 +64,11 @@ static void	_apply_push(t_game *game, t_stack_type type, t_elem *elem)
 		elem->prev = (*head)->prev;
 		(*head)->prev = elem;
 		elem->next = *head;
+	}
+	else
+	{
+		elem->prev = elem;
+		elem->next = elem;
 	}
 	*head = elem;
 	game->count[type]++;
