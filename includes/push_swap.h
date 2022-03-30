@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/29 18:44:07 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/30 18:38:36 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef enum e_operation
 	SWAP = 1 << 2,
 	PUSH = 1 << 3,
 	ROTATE = 1 << 4,
-	REVERSE_ROTATE = 1 << 5,
+	REVERSE = 1 << 5,
 	SA = SWAP | FOR_A,
 	SB = SWAP | FOR_B,
 	SS = SWAP | FOR_SAME,
@@ -90,24 +90,34 @@ typedef enum e_operation
 	RA = ROTATE | FOR_A,
 	RB = ROTATE | FOR_B,
 	RR = ROTATE | FOR_SAME,
-	RRA = REVERSE_ROTATE | FOR_A,
-	RRB = REVERSE_ROTATE | FOR_B,
-	RRR = REVERSE_ROTATE | FOR_SAME
+	RRA = REVERSE | ROTATE | FOR_A,
+	RRB = REVERSE | ROTATE | FOR_B,
+	RRR = REVERSE | ROTATE | FOR_SAME
 }	t_operation;
 
 typedef struct s_game
 {
-	size_t	count;
+	size_t	length;
 	t_elem	*table;
-	t_elem	*sorted;
+	size_t	count[STACK_TYPE_N];
 	t_elem	*stack[STACK_TYPE_N];
 	int		opt_debug;
 	int		opt_visual;
 }	t_game;
 
-void	ready_game(t_game *game);
+/*
+** game.c
+*/
 void	do_game(t_game *game);
 
+/*
+** operation.c
+*/
+void	do_op(t_game *game, t_operation op);
+
+/*
+** Forty-Two Library Functions (libft*.c)
+*/
 void	*ft_memset(void *b, int c, size_t len);
 int		ft_strcmp(const char *s1, const char *s2);
 void	*ft_calloc(size_t count, size_t size);

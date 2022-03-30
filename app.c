@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 03:21:06 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/30 14:56:52 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	unique(t_game *game)
 	unsigned int	rank;
 
 	i = 0;
-	while (i < game->count)
+	while (i < game->length)
 	{
 		rank = 0;
 		j = 0;
@@ -109,11 +109,10 @@ int	main(int argc, char *argv[])
 	ft_memset(&game, 0, sizeof(game));
 	i = process_option(&game, argc, argv);
 	while (i < argc)
-		game.count += ft_split_count(argv[i++], " ");
-	game.table = ft_calloc(game.count, sizeof(t_elem));
+		game.length += ft_split_count(argv[i++], " ");
+	game.table = ft_calloc(game.length, sizeof(t_elem));
 	if (!game.table || !fill(game.table, argc, argv) || !unique(&game))
 		return (push_swap_on_exit(&game, 1));
-	ready_game(&game);
 	do_game(&game);
 	return (push_swap_on_exit(&game, 0));
 }
