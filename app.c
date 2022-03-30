@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 19:18:50 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/30 20:56:27 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	_fill(t_elem *table, int argc, char *argv[])
 	return (i == argc);
 }
 
-static int	_unique(t_game *game)
+static int	_assign(t_game *game)
 {
 	size_t			i;
 	size_t			j;
@@ -111,7 +111,7 @@ int	main(int argc, char *argv[])
 	while (i < argc)
 		game.length += ft_split_count(argv[i++], " ");
 	game.table = ft_calloc(game.length, sizeof(t_elem));
-	if (!game.table || !_fill(game.table, argc, argv) || !_unique(&game))
+	if (!game.table || !_fill(game.table, argc, argv) || !_assign(&game))
 		return (_push_swap_on_exit(&game, 1));
 	do_game(&game);
 	return (_push_swap_on_exit(&game, 0));

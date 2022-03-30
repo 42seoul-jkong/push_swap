@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 18:38:36 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/30 21:15:20 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,12 @@ typedef struct s_game
 ** game.c
 */
 void	do_game(t_game *game);
+void	do_op(t_game *game, t_operation op);
 
 /*
 ** operation.c
 */
-void	do_op(t_game *game, t_operation op);
+void	apply_op(t_game *game, t_operation op);
 
 /*
 ** Forty-Two Library Functions (libft*.c)
