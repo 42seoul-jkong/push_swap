@@ -6,13 +6,13 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 00:47:09 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 01:43:49 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 02:40:44 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	putnbr_int(int n)
+static void	_putnbr_int(int n)
 {
 	const int	sign = n < 0;
 	char		buf[11];
@@ -31,30 +31,54 @@ static void	putnbr_int(int n)
 	put_safe(buf + i, sizeof(buf) - i);
 }
 
-void	visualize(const char *title, t_game *game)
+static void	_visualize_stack(t_elem *stack, size_t count)
 {
-	t_elem	*e;
 	size_t	i;
 
+	putstr_safe(" (");
+	_putnbr_int(count);
+	putstr_safe(")");
+	i = 0;
+	while (i++ < count)
+	{
+		putstr_safe(" ");
+		_putnbr_int(stack->number);
+		stack = stack->next;
+	}
+}
+
+void	visualize(const char *title, t_game *game)
+{
 	putstr_safe("[ ");
 	putstr_safe(title);
-	putstr_safe(" ]\n\tA:");
-	e = game->stack[OF_STACK_A];
-	i = 0;
-	while (i++ < game->count[OF_STACK_A])
-	{
-		putstr_safe(" ");
-		putnbr_int(e->number);
-		e = e->next;
-	}
+	putstr_safe(" ]");
+	putstr_safe("\n\tsize of instruction = ");
+	_putnbr_int(game->instruction_size);
+	putstr_safe(" op(s)");
+	putstr_safe("\n\tA:");
+	_visualize_stack(game->stack[OF_STACK_A], game->count[OF_STACK_A]);
 	putstr_safe("\n\tB:");
-	e = game->stack[OF_STACK_B];
-	i = 0;
-	while (i++ < game->count[OF_STACK_B])
-	{
-		putstr_safe(" ");
-		putnbr_int(e->number);
-		e = e->next;
-	}
+	_visualize_stack(game->stack[OF_STACK_B], game->count[OF_STACK_B]);
+	putstr_safe("\n\n");
+}
+
+void	visualize_gerr(const char *title, t_gerr err)
+{
+	putstr_safe("! ");
+	putstr_safe(title);
+	putstr_safe(" !");
+	putstr_safe("\n\tGame Error number = ");
+	_putnbr_int(err);
+	putstr_safe("\n\tMessage: ");
+	if (err == GAME_FAILURE_SORT)
+		putstr_safe("Not sorted on stack A");
+	else if (err == GAME_FAILURE_A_COUNT)
+		putstr_safe("All elements not collected at stack A");
+	else if (err == GAME_FAILURE_B_COUNT)
+		putstr_safe("Any elements was remaining in stack B");
+	else if (err == GAME_FAILURE_UNDEFINED_OPERATION)
+		putstr_safe("Undefined instruction detected");
+	else if (err == GAME_FAILURE_UNKNOWN)
+		putstr_safe("Unknown reason");
 	putstr_safe("\n\n");
 }

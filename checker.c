@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:19:05 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/30 22:26:37 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 02:41:47 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ static t_operation	_find_op(char str[5])
 		return (RRB);
 	else if (ft_strcmp(str, "rrr") == 0)
 		return (RRR);
-	return (NOP);
+	else if (ft_strcmp(str, "") == 0)
+		return (NOP);
+	return (NONE);
 }
 
 static t_operation	_read_op(void)
@@ -54,29 +56,18 @@ static t_operation	_read_op(void)
 		i++;
 	}
 	if (i == count)
-		return (NOP);
+		return (NONE);
 	str[i] = '\0';
 	return (_find_op(str));
 }
 
-int	run_checker(t_game *game)
-{
-	t_operation	op;
-
-	op = NONE;
-	while (op)
-	{
-		op = _read_op();
-		apply_op(game, op);
-	}
-	return (check(game) == GAME_SUCCESS);
-}
-
-t_gerr	check(t_game *game)
+static t_gerr	_check(t_game *game, t_operation latest_op)
 {
 	unsigned int	i;
 	t_elem			*elem;
 
+	if (latest_op == NONE)
+		return (GAME_FAILURE_UNDEFINED_OPERATION);
 	if (game->count[OF_STACK_B] != 0)
 		return (GAME_FAILURE_B_COUNT);
 	if (game->count[OF_STACK_A] != game->length)
@@ -88,10 +79,39 @@ t_gerr	check(t_game *game)
 		if (elem->rank != i)
 			return (GAME_FAILURE_SORT);
 		elem = elem->next;
+		i++;
 	}
 	if (game->stack[OF_STACK_A] != elem)
 		return (GAME_FAILURE_UNKNOWN);
 	if (game->stack[OF_STACK_B] != NULL)
 		return (GAME_FAILURE_UNKNOWN);
 	return (GAME_SUCCESS);
+}
+
+int	run_checker(t_game *game)
+{
+	t_operation	op;
+	t_gerr		err;
+
+	op = NONE;
+	while (op)
+	{
+		op = _read_op();
+		if (op == NONE || op == NOP)
+			break ;
+		game->instruction_size++;
+		apply_op(game, op);
+		if (game->opt_visual)
+			visualize("run_checker", game);
+	}
+	err = _check(game, op);
+	if (err != GAME_SUCCESS)
+	{
+		putstr_safe("KO\n");
+		if (game->opt_debug)
+			visualize_gerr("run_checker", err);
+		return (0);
+	}
+	putstr_safe("OK\n");
+	return (1);
 }

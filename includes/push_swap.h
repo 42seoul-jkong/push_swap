@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 01:07:07 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 02:29:06 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef enum e_gerr
 	GAME_FAILURE_SORT,
 	GAME_FAILURE_A_COUNT,
 	GAME_FAILURE_B_COUNT,
+	GAME_FAILURE_UNDEFINED_OPERATION,
 	GAME_FAILURE_UNKNOWN = -1,
 }	t_gerr;
 
@@ -112,6 +113,7 @@ typedef struct s_game
 	t_elem	*table;
 	size_t	count[STACK_TYPE_N];
 	t_elem	*stack[STACK_TYPE_N];
+	int		instruction_size;
 	int		opt_debug;
 	int		opt_visual;
 }	t_game;
@@ -131,12 +133,12 @@ void	do_game_mini(t_game *game);
 ** checker.c
 */
 int		run_checker(t_game *game);
-t_gerr	check(t_game *game);
 
 /*
 ** visualize.c
 */
 void	visualize(const char *title, t_game *game);
+void	visualize_gerr(const char *title, t_gerr err);
 
 /*
 ** operation.c
