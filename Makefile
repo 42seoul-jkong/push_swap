@@ -23,7 +23,7 @@ TARGET = push_swap
 
 SRCS_BASE = app.c checker.c \
 			game.c game_mini.c\
-			visualize.c operation.c \
+			visualize.c operation.c util.c \
 			libft.c libft_try_atoi.c libft_split.c \
 			safe_io.c
 SRCS = $(SRCS_BASE)

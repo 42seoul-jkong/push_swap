@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:19:05 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 02:41:47 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 02:22:26 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,26 +63,14 @@ static t_operation	_read_op(void)
 
 static t_gerr	_check(t_game *game, t_operation latest_op)
 {
-	unsigned int	i;
-	t_elem			*elem;
-
 	if (latest_op == NONE)
 		return (GAME_FAILURE_UNDEFINED_OPERATION);
 	if (game->count[OF_STACK_B] != 0)
 		return (GAME_FAILURE_B_COUNT);
 	if (game->count[OF_STACK_A] != game->length)
 		return (GAME_FAILURE_A_COUNT);
-	elem = game->stack[OF_STACK_A];
-	i = 0;
-	while (i < game->length)
-	{
-		if (elem->rank != i)
-			return (GAME_FAILURE_SORT);
-		elem = elem->next;
-		i++;
-	}
-	if (game->stack[OF_STACK_A] != elem)
-		return (GAME_FAILURE_UNKNOWN);
+	if (!is_sorted_stack_a(game))
+		return (GAME_FAILURE_SORT);
 	if (game->stack[OF_STACK_B] != NULL)
 		return (GAME_FAILURE_UNKNOWN);
 	return (GAME_SUCCESS);
@@ -110,8 +98,8 @@ int	run_checker(t_game *game)
 		putstr_safe("KO\n");
 		if (game->opt_debug)
 			visualize_gerr("run_checker", err);
-		return (0);
+		return (EXIT_FAILURE);
 	}
 	putstr_safe("OK\n");
-	return (1);
+	return (EXIT_SUCCESS);
 }

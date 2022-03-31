@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 15:14:33 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 03:42:56 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,10 @@ static void	_do_game_3(t_game *game, t_stack_type type)
 	_do_game_3(game, type);
 }
 
-/*
-** DEPRECATED
-*/
-void	do_game_mini(t_game *game)
+static void	_half(t_game *game)
 {
 	unsigned int	i;
 
-	if (game->length == 3)
-	{
-		_do_game_3(game, OF_STACK_A);
-		visualize("FIRST", game);
-		return ;
-	}
-	_do_game_2(game, OF_STACK_A);
-	visualize("SECOND", game);
 	i = 0;
 	while (i < game->length)
 	{
@@ -86,8 +75,24 @@ void	do_game_mini(t_game *game)
 			write_op(game, RA);
 		i++;
 	}
-	visualize("THIRD", game);
+}
+
+int	do_game_mini(t_game *game)
+{
+	unsigned int	i;
+
+	if (game->length > STACK_TYPE_N * MINI_LIMIT)
+		return (0);
+	if (game->length > MINI_LIMIT)
+		_half(game);
+	_do_game_3(game, OF_STACK_A);
+	_do_game_3(game, OF_STACK_B);
 	_do_game_2(game, OF_STACK_A);
 	_do_game_2(game, OF_STACK_B);
-	visualize("FOURTH", game);
+	i = game->count[OF_STACK_B];
+	while (i-- > 0)
+		write_op(game, PA);
+	if (game->opt_visual)
+		visualize("do_game_mini", game);
+	return (1);
 }

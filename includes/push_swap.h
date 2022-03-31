@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 02:29:06 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 03:42:33 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+
+# define MINI_LIMIT 3
 
 typedef struct s_elem
 {
@@ -127,7 +129,7 @@ void	write_op(t_game *game, t_operation op);
 /*
 ** game_mini.c
 */
-void	do_game_mini(t_game *game);
+int		do_game_mini(t_game *game);
 
 /*
 ** checker.c
@@ -144,6 +146,11 @@ void	visualize_gerr(const char *title, t_gerr err);
 ** operation.c
 */
 void	apply_op(t_game *game, t_operation op);
+
+/*
+** util.c
+*/
+int		is_sorted_stack_a(t_game *game);
 
 /*
 ** Forty-Two Library Functions (libft*.c)

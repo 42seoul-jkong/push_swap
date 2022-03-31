@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 14:07:20 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 00:31:08 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	_fill(t_elem *table, int argc, char *argv[])
 	while (i > 0 && i < argc)
 	{
 		split = ft_split(argv[i++], " ");
-		if (split)
+		if (split && *split)
 		{
 			str_table = split;
 			while (i > 0 && *str_table)
@@ -131,11 +131,11 @@ int	main(int argc, char *argv[])
 	if (game.table && _fill(game.table, argc, argv) && _assign(&game))
 	{
 		_link(&game);
+		exit_status = EXIT_SUCCESS;
 		if (game.opt_debug)
-			run_checker(&game);
+			exit_status = run_checker(&game);
 		else
 			do_game(&game);
-		exit_status = EXIT_SUCCESS;
 	}
 	else
 	{
