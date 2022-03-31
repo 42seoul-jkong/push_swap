@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 02:13:41 by jkong            ###   ########.fr       */
+/*   Updated: 2022/03/31 14:07:20 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ static void	_link(t_game *game)
 	game->count[OF_STACK_A] = game->length;
 	game->stack[OF_STACK_B] = NULL;
 	game->count[OF_STACK_B] = 0;
+	if (game->opt_visual)
+		visualize("_link", game);
 }
 
 int	main(int argc, char *argv[])
