@@ -6,16 +6,24 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/01 03:42:56 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 03:51:46 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+static t_operation	_for_type(t_stack_type type, t_operation op)
+{
+	if (type == OF_STACK_A)
+		op |= FOR_A;
+	if (type == OF_STACK_B)
+		op |= FOR_B;
+	return (op);
+}
+
 static void	_do_game_2(t_game *game, t_stack_type type)
 {
 	const int		rev = type == OF_STACK_B;
-	t_operation		op;
 	unsigned int	r0;
 	unsigned int	r1;
 
@@ -25,12 +33,7 @@ static void	_do_game_2(t_game *game, t_stack_type type)
 	r1 = game->stack[type]->next->rank;
 	if ((r0 < r1) ^ rev)
 		return ;
-	op = SWAP;
-	if (type == OF_STACK_A)
-		op |= FOR_A;
-	else if (type == OF_STACK_B)
-		op |= FOR_B;
-	write_op(game, op);
+	write_op(game, _for_type(type, SWAP));
 }
 
 static void	_do_game_3(t_game *game, t_stack_type type)
@@ -54,11 +57,7 @@ static void	_do_game_3(t_game *game, t_stack_type type)
 		op = ROTATE;
 	else
 		op = SWAP;
-	if (type == OF_STACK_A)
-		op |= FOR_A;
-	else if (type == OF_STACK_B)
-		op |= FOR_B;
-	write_op(game, op);
+	write_op(game, _for_type(type, op));
 	_do_game_3(game, type);
 }
 

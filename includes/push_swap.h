@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/01 03:42:33 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 04:07:22 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,12 @@ typedef struct s_game
 	int		opt_debug;
 	int		opt_visual;
 }	t_game;
+
+typedef struct s_part
+{
+	unsigned int	start;
+	size_t			length;
+}	t_part;
 
 /*
 ** game.c
