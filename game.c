@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/01 11:08:13 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 21:03:54 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,21 @@ static t_operation	_for_type(t_stack_type type, t_operation op)
 	return (op);
 }
 
+static void	_do_game_2(t_game *game, t_stack_type type)
+{
+	const int		rev = type == OF_STACK_B;
+	unsigned int	r0;
+	unsigned int	r1;
+
+	if (game->count[type] < 2)
+		return ;
+	r0 = game->stack[type]->rank;
+	r1 = game->stack[type]->next->rank;
+	if ((r0 < r1) ^ rev)
+		return ;
+	write_op(game, _for_type(type, SWAP));
+}
+
 		#include <stdio.h>
 		#include <stdarg.h>
 
@@ -39,33 +54,57 @@ static t_operation	_for_type(t_stack_type type, t_operation op)
 			return dest;
 		}
 
-static void	_partition(t_game *game, t_stack_type type, t_part *parent)
+static void	_partition(t_game *game, t_stack_type type, t_part *parent, int depth)
 {
-	t_part	first;
-	t_part	second;
-	size_t	i;
+	const int	rev = type == OF_STACK_B;
+	t_part		first;
+	t_part		second;
+	size_t		i;
+	size_t		rotate;
 
-			first.depth = parent->depth + 1;
-			second.depth = parent->depth + 1;
-			putstr_safe(__format("Partition Created. at %c [ %d ] ( %d, %d )\n", 'A' + (type == OF_STACK_B), parent->depth, parent->start, parent->length));
-	if (parent->length <= 2)
-		return ;
+			visualize(__format("Partition Created. at %c [ %d ] ( %d, %d )", 'A' + (type == OF_STACK_B), depth, parent->start, parent->length), game);
+			getchar_safe();
 	i = 0;
+	rotate = 0;
 	while (i < parent->length)
 	{
-		if (game->stack[type]->rank < parent->start + parent->length / 2)
+		if ((game->stack[type]->rank < parent->start + parent->length / 2) ^ rev)
 			write_op(game, _for_type(_inverse(type), PUSH));
 		else
+		{
 			write_op(game, _for_type(type, ROTATE));
+			rotate++;
+		}
 		i++;
 	}
-			visualize(__format("test %d %d %c %d", parent->start, parent->length, 'a' + (type == OF_STACK_B)), game);
-	first.start = parent->start;
-	first.length = parent->length - parent->length / 2;
-	_partition(game, _inverse(type), &first);
-	second.start = parent->start + parent->length - parent->length / 2;
-	second.length = parent->length / 2;
-	_partition(game, type, &second);
+	i = rotate;
+	while (i-- > 0)
+		write_op(game, _for_type(type, REVERSE | ROTATE));
+	second.length = rotate;
+	first.length = parent->length - second.length;
+	second.start = parent->start + !rev * (first.length + 1);
+	first.start = parent->start + rev * (first.length + 1);
+	rotate = 0;
+	if (first.length > 2)
+		_partition(game, _inverse(type), &first, depth + 1);
+	else
+	{
+		_do_game_2(game, _inverse(type));
+		i = first.length;
+		while (i-- > 0)
+			write_op(game, _for_type(type, PUSH));
+		rotate += first.length;
+	}
+	if (second.length > 2)
+		_partition(game, type, &second, depth + 1);
+	else
+	{
+		_do_game_2(game, type);
+		rotate += second.length;
+	}
+	i = rotate;
+	while (i-- > 0)
+		write_op(game, _for_type(type, ROTATE));
 }
 
 void	do_game(t_game *game)
@@ -74,10 +113,9 @@ void	do_game(t_game *game)
 
 	if (is_sorted_stack_a(game) || do_game_mini(game))
 		return ;
-			root.depth = 0;
 	root.start = 0;
 	root.length = game->length;
-	_partition(game, OF_STACK_A, &root);
+	_partition(game, OF_STACK_A, &root, 0);
 	visualize("Not implemented. KO :(", game);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/01 11:23:30 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 20:24:12 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@
 # include <limits.h>
 
 # define MINI_LIMIT 3
-
-typedef struct s_elem
-{
-	int				number;
-	unsigned int	rank;
-	struct s_elem	*prev;
-	struct s_elem	*next;
-}	t_elem;
 
 typedef enum e_stack_type
 {
@@ -109,12 +101,21 @@ typedef enum e_gerr
 	GAME_FAILURE_UNKNOWN = -1,
 }	t_gerr;
 
+typedef struct s_elem
+{
+	int				number;
+	unsigned int	rank;
+	struct s_elem	*prev;
+	struct s_elem	*next;
+}	t_elem;
+
 typedef struct s_game
 {
 	size_t	length;
 	t_elem	*table;
 	size_t	count[STACK_TYPE_N];
 	t_elem	*stack[STACK_TYPE_N];
+	size_t	complete[STACK_TYPE_N];
 	int		instruction_size;
 	int		opt_debug;
 	int		opt_visual;
@@ -122,7 +123,6 @@ typedef struct s_game
 
 typedef struct s_part
 {
-			int				depth;
 	unsigned int	start;
 	size_t			length;
 }	t_part;

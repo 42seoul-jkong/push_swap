@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 14:25:02 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 01:46:44 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 20:48:42 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	_apply_swap(t_game *game, t_stack_type type)
 {
+	t_elem	*tail;
 	t_elem	*first;
 	t_elem	*second;
 
@@ -21,10 +22,11 @@ static void	_apply_swap(t_game *game, t_stack_type type)
 		return ;
 	first = game->stack[type];
 	second = first->next;
+	tail = first->prev;
 	game->stack[type] = second;
 	second->next->prev = first;
-	first->prev->next = second;
-	second->prev = first->prev;
+	tail->next = second;
+	second->prev = tail;
 	first->next = second->next;
 	second->next = first;
 	first->prev = second;
