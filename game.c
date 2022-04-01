@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/02 02:08:22 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/02 03:03:02 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,15 @@ static void	_partition(t_game *game, t_stack_type type, t_part *parent, int __de
 	t_part		child[STACK_TYPE_N];
 	size_t		i;
 
-			visualize(__format("Partition Created. at %c [ %d ] ( %d, %d )", 'A' + (type == OF_STACK_B), __depth, parent->start, parent->length), game);
-			getchar_safe();
-	child[rev].start = parent->start;
-	child[rev].length = parent->length / 2;
-	child[!rev].start = parent->start + child[rev].length;
-	child[!rev].length = parent->length - child[rev].length;
+	if (game->opt_visual)
+	{
+		visualize(__format("Partition Created. at %c [ %d ] ( %d, %d )", 'A' + (type == OF_STACK_B), __depth, parent->start, parent->length), game);
+		getchar_safe();
+	}
+	child[0].start = parent->start;
+	child[0].length = parent->length / 2;
+	child[1].start = parent->start + child[0].length;
+	child[1].length = parent->length - child[0].length;
 	i = parent->length;
 	while (i-- > 0)
 	{
@@ -90,11 +93,19 @@ static void	_partition(t_game *game, t_stack_type type, t_part *parent, int __de
 		i = child[0].length;
 		if (i >= 2)
 			_do_game_2(game, _inverse(type));
-		while (i-- > 0)
-			write_op(game, _for_type(type, PUSH));
-		i = child[0].length;
-		while (i-- > 0)
-			write_op(game, _for_type(type, ROTATE));
+		if (!rev)
+		{
+			while (i-- > 0)
+				write_op(game, _for_type(type, PUSH));
+			i = child[0].length;
+			while (i-- > 0)
+				write_op(game, _for_type(type, ROTATE));
+		}
+		else
+		{
+			while (i-- > 0)
+				write_op(game, _for_type(_inverse(type), ROTATE));
+		}
 	}
 	if (child[1].length > 2)
 		_partition(game, type, &child[1], __depth + 1);
@@ -103,9 +114,24 @@ static void	_partition(t_game *game, t_stack_type type, t_part *parent, int __de
 		i = child[1].length;
 		if (i >= 2)
 			_do_game_2(game, type);
-		i = child[1].length;
-		while (i-- > 0)
-			write_op(game, _for_type(type, ROTATE));
+		if (!rev)
+		{
+			while (i-- > 0)
+				write_op(game, _for_type(type, ROTATE));
+		}
+		else
+		{
+			while (i-- > 0)
+				write_op(game, _for_type(_inverse(type), PUSH));
+			i = child[1].length;
+			while (i-- > 0)
+				write_op(game, _for_type(_inverse(type), ROTATE));
+		}
+	}
+	if (game->opt_visual)
+	{
+		visualize(__format("Partition Removed. at %c [ %d ] ( %d(%d | %d), %d(%d | %d) )", 'A' + (type == OF_STACK_B), __depth, parent->start, child[0].start, child[1].start, parent->length, child[0].length, child[1].length), game);
+		getchar_safe();
 	}
 }
 
