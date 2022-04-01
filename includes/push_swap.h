@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/01 20:24:12 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/02 01:36:09 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ typedef struct s_game
 	t_elem	*table;
 	size_t	count[STACK_TYPE_N];
 	t_elem	*stack[STACK_TYPE_N];
-	size_t	complete[STACK_TYPE_N];
 	int		instruction_size;
 	int		opt_debug;
 	int		opt_visual;

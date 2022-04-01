@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/01 21:03:54 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/02 02:08:22 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ static t_stack_type	_inverse(t_stack_type type)
 	return (type ^ 1);
 }
 
+/*
+ * Deprecated cause duplicated
+ */
 static t_operation	_for_type(t_stack_type type, t_operation op)
 {
 	if (type == OF_STACK_A)
@@ -26,6 +29,9 @@ static t_operation	_for_type(t_stack_type type, t_operation op)
 	return (op);
 }
 
+/*
+ * Deprecated cause duplicated
+ */
 static void	_do_game_2(t_game *game, t_stack_type type)
 {
 	const int		rev = type == OF_STACK_B;
@@ -54,57 +60,53 @@ static void	_do_game_2(t_game *game, t_stack_type type)
 			return dest;
 		}
 
-static void	_partition(t_game *game, t_stack_type type, t_part *parent, int depth)
+static void	_partition(t_game *game, t_stack_type type, t_part *parent, int __depth)
 {
 	const int	rev = type == OF_STACK_B;
-	t_part		first;
-	t_part		second;
+	t_part		child[STACK_TYPE_N];
 	size_t		i;
-	size_t		rotate;
 
-			visualize(__format("Partition Created. at %c [ %d ] ( %d, %d )", 'A' + (type == OF_STACK_B), depth, parent->start, parent->length), game);
+			visualize(__format("Partition Created. at %c [ %d ] ( %d, %d )", 'A' + (type == OF_STACK_B), __depth, parent->start, parent->length), game);
 			getchar_safe();
-	i = 0;
-	rotate = 0;
-	while (i < parent->length)
+	child[rev].start = parent->start;
+	child[rev].length = parent->length / 2;
+	child[!rev].start = parent->start + child[rev].length;
+	child[!rev].length = parent->length - child[rev].length;
+	i = parent->length;
+	while (i-- > 0)
 	{
-		if ((game->stack[type]->rank < parent->start + parent->length / 2) ^ rev)
+		if (child[0].start <= game->stack[type]->rank && game->stack[type]->rank < child[0].start + child[0].length)
 			write_op(game, _for_type(_inverse(type), PUSH));
 		else
-		{
 			write_op(game, _for_type(type, ROTATE));
-			rotate++;
-		}
-		i++;
 	}
-	i = rotate;
+	i = child[1].length;
 	while (i-- > 0)
 		write_op(game, _for_type(type, REVERSE | ROTATE));
-	second.length = rotate;
-	first.length = parent->length - second.length;
-	second.start = parent->start + !rev * (first.length + 1);
-	first.start = parent->start + rev * (first.length + 1);
-	rotate = 0;
-	if (first.length > 2)
-		_partition(game, _inverse(type), &first, depth + 1);
+	if (child[0].length > 2)
+		_partition(game, _inverse(type), &child[0], __depth + 1);
 	else
 	{
-		_do_game_2(game, _inverse(type));
-		i = first.length;
+		i = child[0].length;
+		if (i >= 2)
+			_do_game_2(game, _inverse(type));
 		while (i-- > 0)
 			write_op(game, _for_type(type, PUSH));
-		rotate += first.length;
+		i = child[0].length;
+		while (i-- > 0)
+			write_op(game, _for_type(type, ROTATE));
 	}
-	if (second.length > 2)
-		_partition(game, type, &second, depth + 1);
+	if (child[1].length > 2)
+		_partition(game, type, &child[1], __depth + 1);
 	else
 	{
-		_do_game_2(game, type);
-		rotate += second.length;
+		i = child[1].length;
+		if (i >= 2)
+			_do_game_2(game, type);
+		i = child[1].length;
+		while (i-- > 0)
+			write_op(game, _for_type(type, ROTATE));
 	}
-	i = rotate;
-	while (i-- > 0)
-		write_op(game, _for_type(type, ROTATE));
 }
 
 void	do_game(t_game *game)
