@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/01 04:07:22 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/01 11:23:30 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ typedef struct s_game
 
 typedef struct s_part
 {
+			int				depth;
 	unsigned int	start;
 	size_t			length;
 }	t_part;
