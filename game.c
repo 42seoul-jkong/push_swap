@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 03:38:21 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 03:59:09 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,17 @@ void	do_game(t_game *game)
 	t_part	root;
 	size_t	i;
 
-	if (is_sort_completed(game) || do_game_mini(game))
-		return ;
-	root.start = 0;
-	root.length = game->length;
-	root.reverse = 0;
-	qsort_partition(game, OF_STACK_A, &root);
+	if (!is_sort_completed(game) && !do_game_mini(game))
+	{
+		root.start = 0;
+		root.length = game->length;
+		root.reverse = 0;
+		qsort_partition(game, OF_STACK_A, &root);
+	}
 	_optimize(game);
-	i = game->op_size;
-	while (i-- > 0)
-		_put_op(game->op_vector[i]);
+	i = 0;
+	while (i < game->op_size)
+		_put_op(game->op_vector[i++]);
 	if (game->opt_visual)
 		visualize("Not implemented. KO :(", game);
 }
