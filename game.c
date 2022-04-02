@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/02 17:04:10 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/02 19:31:09 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,6 @@ static t_operation	_for_type(t_stack_type type, t_operation op)
 	return (op);
 }
 
-/*
- * Deprecated cause duplicated
-static void	_do_game_2(t_game *game, t_stack_type type)
-{
-	const int		rev = type == OF_STACK_B;
-	unsigned int	r0;
-	unsigned int	r1;
-
-	if (game->count[type] < 2)
-		return ;
-	r0 = game->stack[type]->rank;
-	r1 = game->stack[type]->next->rank;
-	if ((r0 < r1) ^ rev)
-		return ;
-	write_op(game, _for_type(type, SWAP));
-}
- */
-
 		#include <stdio.h>
 		#include <stdarg.h>
 
@@ -59,49 +41,72 @@ static void	_do_game_2(t_game *game, t_stack_type type)
 			va_end(va);
 			return dest;
 		}
+		static int __depth;
 
-static void	_partition(t_game *game, t_stack_type type, int level)
+static void	_partition(t_game *game, t_stack_type type, t_part *parent)
 {
 	size_t		i;
-	size_t		pop;
+	t_part		child[STACK_TYPE_N];
 
-	if (game->opt_visual)
+	if (parent->length <= 2 || (parent->length == 3 && game->count[type] == 3))
 	{
-		visualize(__format("Partition Created. at %c [ %d ]", 'A' + (type == OF_STACK_B), level), game);
-		getchar_safe();
-	}
-	i = game->count[type];
-	pop = 0;
-	while (i-- > 0)
-	{
-		if ((game->stack[type]->rank >> level) & 1)
-			write_op(game, _for_type(type, ROTATE));
+		if (parent->reverse)
+			for (size_t k = 0; k < parent->length; k++)
+				write_op(game, _for_type(type, REVERSE | ROTATE));
+		if (parent->length == 3)
+			do_game_3(game, type);
 		else
-		{
-			write_op(game, _for_type(_inverse(type), PUSH));
-			pop++;
-		}
+			do_game_2(game, type);
+		if (type == OF_STACK_B)
+			for (size_t k = 0; k < parent->length; k++)
+				write_op(game, PA);
+		return ;
 	}
-	i = pop;
-	while (i-- > 0)
-		write_op(game, _for_type(type, PUSH));
 	if (game->opt_visual)
 	{
-		visualize(__format("Partition Removed. at %c [ %d ]", 'A' + (type == OF_STACK_B), level), game);
+		__depth++;
+		visualize(__format("Partition Created. at %c [ %d ] ( %d, %d )", 'A' + (type == OF_STACK_B), __depth, parent->start, parent->length), game);
 		getchar_safe();
+	}
+	child[OF_STACK_B].start = parent->start;
+	child[OF_STACK_B].length = parent->length / 2;
+	child[OF_STACK_B].reverse = 0;
+	child[OF_STACK_A].start = parent->start + child[OF_STACK_B].length;
+	child[OF_STACK_A].length = parent->length - child[OF_STACK_B].length;
+	child[OF_STACK_A].reverse = 0;
+	i = parent->length;
+	while (i-- > 0)
+	{
+		if (parent->reverse)
+			write_op(game, _for_type(type, REVERSE | ROTATE));
+		if (child[_inverse(type)].start <= game->stack[type]->rank && game->stack[type]->rank < child[_inverse(type)].start + child[_inverse(type)].length)
+			write_op(game, _for_type(_inverse(type), PUSH));
+		else if (!parent->reverse)
+			write_op(game, _for_type(type, ROTATE));
+	}
+	child[type].reverse = !parent->reverse && game->count[type] != child[type].length;
+	_partition(game, OF_STACK_A, &child[OF_STACK_A]);
+	_partition(game, OF_STACK_B, &child[OF_STACK_B]);
+	if (game->opt_visual)
+	{
+		visualize(__format("Partition Removed. at %c [ %d ] ( %d(%d | %d), %d(%d | %d) )", 'A' + (type == OF_STACK_B), __depth, parent->start, child[0].start, child[1].start, parent->length, child[0].length, child[1].length), game);
+		getchar_safe();
+		__depth--;
 	}
 }
 
 void	do_game(t_game *game)
 {
-	int i;
+	t_part	root;
 
 	if (is_sorted_stack_a(game) || do_game_mini(game))
 		return ;
-	i = 0;
-	while (game->length >> i)
-		_partition(game, OF_STACK_A, i++);
-	visualize("Not implemented. KO :(", game);
+	root.start = 0;
+	root.length = game->length;
+	root.reverse = 0;
+	_partition(game, OF_STACK_A, &root);
+	if (game->opt_visual)
+		visualize("Not implemented. KO :(", game);
 }
 
 void	write_op(t_game *game, t_operation op)

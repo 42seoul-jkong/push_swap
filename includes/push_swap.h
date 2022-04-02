@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/02 01:36:09 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/02 19:27:07 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ typedef struct s_part
 {
 	unsigned int	start;
 	size_t			length;
+	int				reverse;
 }	t_part;
 
 /*
@@ -135,6 +136,8 @@ void	write_op(t_game *game, t_operation op);
 /*
 ** game_mini.c
 */
+void	do_game_2(t_game *game, t_stack_type type);
+void	do_game_3(t_game *game, t_stack_type type);
 int		do_game_mini(t_game *game);
 
 /*

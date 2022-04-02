@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/01 03:51:46 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/02 19:29:07 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_operation	_for_type(t_stack_type type, t_operation op)
 	return (op);
 }
 
-static void	_do_game_2(t_game *game, t_stack_type type)
+void	do_game_2(t_game *game, t_stack_type type)
 {
 	const int		rev = type == OF_STACK_B;
 	unsigned int	r0;
@@ -36,7 +36,7 @@ static void	_do_game_2(t_game *game, t_stack_type type)
 	write_op(game, _for_type(type, SWAP));
 }
 
-static void	_do_game_3(t_game *game, t_stack_type type)
+void	do_game_3(t_game *game, t_stack_type type)
 {
 	const int		rev = type == OF_STACK_B;
 	t_operation		op;
@@ -58,7 +58,7 @@ static void	_do_game_3(t_game *game, t_stack_type type)
 	else
 		op = SWAP;
 	write_op(game, _for_type(type, op));
-	_do_game_3(game, type);
+	do_game_3(game, type);
 }
 
 static void	_half(t_game *game)
@@ -84,10 +84,10 @@ int	do_game_mini(t_game *game)
 		return (0);
 	if (game->length > MINI_LIMIT)
 		_half(game);
-	_do_game_3(game, OF_STACK_A);
-	_do_game_3(game, OF_STACK_B);
-	_do_game_2(game, OF_STACK_A);
-	_do_game_2(game, OF_STACK_B);
+	do_game_3(game, OF_STACK_A);
+	do_game_3(game, OF_STACK_B);
+	do_game_2(game, OF_STACK_A);
+	do_game_2(game, OF_STACK_B);
 	i = game->count[OF_STACK_B];
 	while (i-- > 0)
 		write_op(game, PA);
