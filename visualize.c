@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 00:47:09 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 02:40:44 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/02 14:39:18 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	_putnbr_int(int n)
 {
 	const int	sign = n < 0;
 	char		buf[11];
-	int			i;
+	size_t		i;
 
 	i = sizeof(buf);
 	if (!n)
