@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 00:47:09 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/02 14:39:18 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 03:39:26 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,13 @@ void	visualize(const char *title, t_game *game)
 	putstr_safe(title);
 	putstr_safe(" ]");
 	putstr_safe("\n\tsize of instruction = ");
-	_putnbr_int(game->instruction_size);
+	_putnbr_int(game->op_size - game->op_optimize);
+	if (game->op_optimize)
+	{
+		putstr_safe(" (");
+		_putnbr_int(-game->op_optimize);
+		putstr_safe(")");
+	}
 	putstr_safe(" op(s)");
 	putstr_safe("\n\tA:");
 	_visualize_stack(game->stack[OF_STACK_A], game->count[OF_STACK_A]);
@@ -62,7 +68,7 @@ void	visualize(const char *title, t_game *game)
 	putstr_safe("\n\n");
 }
 
-void	visualize_gerr(const char *title, t_gerr err)
+void	visualize_gerror(const char *title, t_gerror err)
 {
 	putstr_safe("! ");
 	putstr_safe(title);

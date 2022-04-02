@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/02 19:27:07 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 03:38:11 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@
 # include <limits.h>
 
 # define MINI_LIMIT 3
+# define VECTOR_SIZE 1024
 
-typedef enum e_stack_type
+typedef enum e_kind
 {
 	OF_STACK_A,
 	OF_STACK_B,
-	STACK_TYPE_N
-}	t_stack_type;
+	STACK_KIND_N
+}	t_kind;
 
 /**
  * To do this you have the following operations at your disposal:
@@ -91,7 +92,7 @@ typedef enum e_operation
 	RRR = REVERSE | ROTATE | FOR_SAME
 }	t_operation;
 
-typedef enum e_gerr
+typedef enum e_gerror
 {
 	GAME_SUCCESS,
 	GAME_FAILURE_SORT,
@@ -99,7 +100,7 @@ typedef enum e_gerr
 	GAME_FAILURE_B_COUNT,
 	GAME_FAILURE_UNDEFINED_OPERATION,
 	GAME_FAILURE_UNKNOWN = -1,
-}	t_gerr;
+}	t_gerror;
 
 typedef struct s_elem
 {
@@ -111,13 +112,16 @@ typedef struct s_elem
 
 typedef struct s_game
 {
-	size_t	length;
-	t_elem	*table;
-	size_t	count[STACK_TYPE_N];
-	t_elem	*stack[STACK_TYPE_N];
-	int		instruction_size;
-	int		opt_debug;
-	int		opt_visual;
+	size_t		length;
+	t_elem		*table;
+	size_t		count[STACK_KIND_N];
+	t_elem		*stack[STACK_KIND_N];
+	size_t		op_size;
+	size_t		op_capacity;
+	t_operation	*op_vector;
+	size_t		op_optimize;
+	int			opt_debug;
+	int			opt_visual;
 }	t_game;
 
 typedef struct s_part
@@ -130,56 +134,65 @@ typedef struct s_part
 /*
 ** game.c
 */
-void	do_game(t_game *game);
-void	write_op(t_game *game, t_operation op);
+void		do_game(t_game *game);
+void		write_op(t_game *game, t_operation op);
 
 /*
 ** game_mini.c
 */
-void	do_game_2(t_game *game, t_stack_type type);
-void	do_game_3(t_game *game, t_stack_type type);
-int		do_game_mini(t_game *game);
+void		do_game_2(t_game *game);
+void		do_game_3(t_game *game, t_kind kind);
+int			do_game_mini(t_game *game);
+
+/*
+** game_qsort.c
+*/
+void		qsort_partition(t_game *game, t_kind kind, t_part *parent);
 
 /*
 ** checker.c
 */
-int		run_checker(t_game *game);
+int			run_checker(t_game *game);
 
 /*
 ** visualize.c
 */
-void	visualize(const char *title, t_game *game);
-void	visualize_gerr(const char *title, t_gerr err);
+void		visualize(const char *title, t_game *game);
+void		visualize_gerror(const char *title, t_gerror err);
 
 /*
 ** operation.c
 */
-void	apply_op(t_game *game, t_operation op);
+void		apply_op(t_game *game, t_operation op);
 
 /*
 ** util.c
 */
-int		is_sorted_stack_a(t_game *game);
+int			is_sort_completed(t_game *game);
+int			is_sorted(t_game *game, t_kind kind, t_part *part);
+t_operation	op_for_kind(t_kind kind, t_operation op);
+t_kind		inverse_kind(t_kind kind);
 
 /*
 ** Forty-Two Library Functions (libft*.c)
 */
-size_t	ft_strlen(const char *s);
-void	*ft_memset(void *b, int c, size_t len);
-int		ft_strcmp(const char *s1, const char *s2);
-void	*ft_calloc(size_t count, size_t size);
-int		ft_try_atoi(const char *str, int *out);
-size_t	ft_split_count(const char *s, const char *set);
-char	**ft_split(const char *s, const char *set);
-char	**ft_split_free(char **ptr);
+size_t		ft_strlen(const char *s);
+void		*ft_memset(void *b, int c, size_t len);
+void		*ft_memcpy(void *dst, const void *src, size_t n);
+int			ft_strcmp(const char *s1, const char *s2);
+void		*ft_calloc(size_t count, size_t size);
+int			ft_try_atoi(const char *str, int *out);
+size_t		ft_split_count(const char *s, const char *set);
+char		**ft_split(const char *s, const char *set);
+char		**ft_split_free(char **ptr);
 
 /*
 ** safe_io.c
 */
-int		get_safe(void *buf, size_t len);
-int		getchar_safe(void);
-void	put_safe(const void *buf, size_t len);
-void	putchar_safe(char c);
-void	putstr_safe(const char *str);
+int			get_safe(void *buf, size_t len);
+int			getchar_safe(void);
+void		put_safe(const void *buf, size_t len);
+void		putchar_safe(char c);
+void		putstr_safe(const char *str);
 
 #endif

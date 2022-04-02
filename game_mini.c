@@ -6,49 +6,55 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/02 19:29:07 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 03:09:47 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static t_operation	_for_type(t_stack_type type, t_operation op)
+int	is_able_to_game_2(t_game *game, t_kind kind)
 {
-	if (type == OF_STACK_A)
-		op |= FOR_A;
-	if (type == OF_STACK_B)
-		op |= FOR_B;
-	return (op);
-}
-
-void	do_game_2(t_game *game, t_stack_type type)
-{
-	const int		rev = type == OF_STACK_B;
+	const int		rev = kind == OF_STACK_B;
 	unsigned int	r0;
 	unsigned int	r1;
 
-	if (game->count[type] < 2)
-		return ;
-	r0 = game->stack[type]->rank;
-	r1 = game->stack[type]->next->rank;
+	if (game->count[kind] < 2)
+		return (0);
+	r0 = game->stack[kind]->rank;
+	r1 = game->stack[kind]->next->rank;
 	if ((r0 < r1) ^ rev)
-		return ;
-	write_op(game, _for_type(type, SWAP));
+		return (0);
+	return (1);
 }
 
-void	do_game_3(t_game *game, t_stack_type type)
+void	do_game_2(t_game *game)
 {
-	const int		rev = type == OF_STACK_B;
+	int	a;
+	int	b;
+
+	a = is_able_to_game_2(game, OF_STACK_A);
+	b = is_able_to_game_2(game, OF_STACK_B);
+	if (a && b)
+		write_op(game, SS);
+	else if (a)
+		write_op(game, SA);
+	else if (b)
+		write_op(game, SB);
+}
+
+void	do_game_3(t_game *game, t_kind kind)
+{
+	const int		rev = kind == OF_STACK_B;
 	t_operation		op;
 	unsigned int	r0;
 	unsigned int	r1;
 	unsigned int	r2;
 
-	if (game->count[type] != 3)
+	if (game->count[kind] != 3)
 		return ;
-	r0 = game->stack[type]->rank;
-	r1 = game->stack[type]->next->rank;
-	r2 = game->stack[type]->next->next->rank;
+	r0 = game->stack[kind]->rank;
+	r1 = game->stack[kind]->next->rank;
+	r2 = game->stack[kind]->next->next->rank;
 	if (((r0 < r1) ^ rev) && ((r1 < r2) ^ rev))
 		return ;
 	if (((r1 > r0) ^ rev) && ((r1 > r2) ^ rev))
@@ -57,37 +63,31 @@ void	do_game_3(t_game *game, t_stack_type type)
 		op = ROTATE;
 	else
 		op = SWAP;
-	write_op(game, _for_type(type, op));
-	do_game_3(game, type);
-}
-
-static void	_half(t_game *game)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < game->length)
-	{
-		if (game->stack[OF_STACK_A]->rank < game->length / 2)
-			write_op(game, PB);
-		else
-			write_op(game, RA);
-		i++;
-	}
+	write_op(game, op_for_kind(kind, op));
+	do_game_3(game, kind);
 }
 
 int	do_game_mini(t_game *game)
 {
 	unsigned int	i;
 
-	if (game->length > STACK_TYPE_N * MINI_LIMIT)
+	if (game->length > STACK_KIND_N * MINI_LIMIT)
 		return (0);
 	if (game->length > MINI_LIMIT)
-		_half(game);
+	{
+		i = 0;
+		while (i < game->length)
+		{
+			if (game->stack[OF_STACK_A]->rank < game->length / 2)
+				write_op(game, PB);
+			else
+				write_op(game, RA);
+			i++;
+		}
+	}
 	do_game_3(game, OF_STACK_A);
 	do_game_3(game, OF_STACK_B);
-	do_game_2(game, OF_STACK_A);
-	do_game_2(game, OF_STACK_B);
+	do_game_2(game);
 	i = game->count[OF_STACK_B];
 	while (i-- > 0)
 		write_op(game, PA);

@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:19:05 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/01 02:22:26 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 03:37:04 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static t_operation	_read_op(void)
 	return (_find_op(str));
 }
 
-static t_gerr	_check(t_game *game, t_operation latest_op)
+static t_gerror	_check(t_game *game, t_operation latest_op)
 {
 	if (latest_op == NONE)
 		return (GAME_FAILURE_UNDEFINED_OPERATION);
@@ -69,7 +69,7 @@ static t_gerr	_check(t_game *game, t_operation latest_op)
 		return (GAME_FAILURE_B_COUNT);
 	if (game->count[OF_STACK_A] != game->length)
 		return (GAME_FAILURE_A_COUNT);
-	if (!is_sorted_stack_a(game))
+	if (!is_sort_completed(game))
 		return (GAME_FAILURE_SORT);
 	if (game->stack[OF_STACK_B] != NULL)
 		return (GAME_FAILURE_UNKNOWN);
@@ -79,7 +79,7 @@ static t_gerr	_check(t_game *game, t_operation latest_op)
 int	run_checker(t_game *game)
 {
 	t_operation	op;
-	t_gerr		err;
+	t_gerror	err;
 
 	op = NONE;
 	while (op)
@@ -87,7 +87,7 @@ int	run_checker(t_game *game)
 		op = _read_op();
 		if (op == NONE || op == NOP)
 			break ;
-		game->instruction_size++;
+		game->op_size++;
 		apply_op(game, op);
 		if (game->opt_visual)
 			visualize("run_checker", game);
@@ -97,7 +97,7 @@ int	run_checker(t_game *game)
 	{
 		putstr_safe("KO\n");
 		if (game->opt_debug)
-			visualize_gerr("run_checker", err);
+			visualize_gerror("run_checker", err);
 		return (EXIT_FAILURE);
 	}
 	putstr_safe("OK\n");

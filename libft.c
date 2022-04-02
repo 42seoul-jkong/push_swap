@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:30:03 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/31 01:03:35 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 02:32:46 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,22 @@ void	*ft_memset(void *b, int c, size_t len)
 	while (i < len)
 		((unsigned char *)b)[i++] = (unsigned char)c;
 	return (b);
+}
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	i;
+
+	if (src != dst)
+	{
+		i = 0;
+		while (i < n)
+		{
+			((unsigned char *)dst)[i] = ((const unsigned char *)src)[i];
+			i++;
+		}
+	}
+	return (dst);
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
