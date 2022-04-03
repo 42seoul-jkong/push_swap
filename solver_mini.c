@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 19:08:10 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/04 02:00:47 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,32 +81,4 @@ void	solve_only_3(t_game *game)
 			write_op(game, b | FOR_B);
 	}
 	solve_only_3(game);
-}
-
-int	solve_mini(t_game *game)
-{
-	unsigned int	i;
-
-	if (game->length > STACK_KIND_N * MINI_LIMIT)
-		return (0);
-	if (game->length > MINI_LIMIT)
-	{
-		i = 0;
-		while (i < game->length)
-		{
-			if (game->stack[OF_STACK_A]->rank < game->length / 2)
-				write_op(game, PB);
-			else
-				write_op(game, RA);
-			i++;
-		}
-	}
-	solve_only_3(game);
-	solve_2(game);
-	i = game->count[OF_STACK_B];
-	while (i-- > 0)
-		write_op(game, PA);
-	if (game->opt_visual)
-		visualize("do_game_mini", game);
-	return (1);
 }

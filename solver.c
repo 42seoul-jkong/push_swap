@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 18:30:35 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/04 02:25:15 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,19 @@ void	write_op(t_game *game, t_operation op)
 
 void	run_solver(t_game *game)
 {
+	t_game	game2;
 	size_t	i;
 
-	if (!is_sort_completed(game) && !solve_mini(game))
+	game_copy(&game2, game);
+	if (try_solve_simple(&game2))
 	{
-		solve_qsort(game);
+		i = 0;
+		while (i < game2.op_size)
+			write_op(game, game2.op_vector[i++]);
 	}
+	else
+		solve_qsort(game);
+	game_free(&game2);
 #ifndef __DEBUG
 	_optimize(game);
 	i = 0;

@@ -6,30 +6,11 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 02:20:43 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 03:37:00 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/04 02:02:13 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-int	is_sort_completed(t_game *game)
-{
-	unsigned int	i;
-	t_elem			*elem;
-
-	if (game->count[OF_STACK_A] != game->length)
-		return (0);
-	elem = game->stack[OF_STACK_A];
-	i = 0;
-	while (i < game->length)
-	{
-		if (elem->rank != i)
-			return (0);
-		i++;
-		elem = elem->next;
-	}
-	return (1);
-}
 
 int	is_sorted(t_game *game, t_kind kind, t_part *part)
 {

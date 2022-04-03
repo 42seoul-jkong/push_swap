@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 18:49:09 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/04 02:28:17 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <unistd.h>
 # include <limits.h>
 
-# define MINI_LIMIT 3
 # define VECTOR_SIZE 1024
 
 typedef enum e_kind
@@ -154,7 +153,11 @@ void		write_op(t_game *game, t_operation op);
 */
 void		solve_2(t_game *game);
 void		solve_only_3(t_game *game);
-int			solve_mini(t_game *game);
+
+/*
+** solver_simple.c
+*/
+int			try_solve_simple(t_game *game);
 
 /*
 ** solver_qsort.c
@@ -175,7 +178,6 @@ void		visualize_gerror(const char *title, t_gerror err);
 /*
 ** util.c
 */
-int			is_sort_completed(t_game *game);
 int			is_sorted(t_game *game, t_kind kind, t_part *part);
 t_operation	op_for_kind(t_kind kind, t_operation op);
 t_kind		inverse_kind(t_kind kind);
