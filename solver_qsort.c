@@ -45,7 +45,7 @@ static int	_end(t_game *game, t_kind kind, t_part *parent)
 			write_op(game, op_for_kind(kind, REVERSE | ROTATE));
 	}
 	if (only3)
-		solve_only_3(game, kind);
+		solve_only_3(game);
 	else if (len2)
 		solve_2(game);
 	if (kind == OF_STACK_B)

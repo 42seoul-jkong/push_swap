@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 18:23:09 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 18:49:09 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,8 @@ void		write_op(t_game *game, t_operation op);
 /*
 ** solver_mini.c
 */
-int			is_able_to_solve_2(t_game *game, t_kind kind);
 void		solve_2(t_game *game);
-void		solve_only_3(t_game *game, t_kind kind);
+void		solve_only_3(t_game *game);
 int			solve_mini(t_game *game);
 
 /*

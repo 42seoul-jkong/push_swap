@@ -6,13 +6,13 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 18:35:16 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 19:08:10 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	is_able_to_solve_2(t_game *game, t_kind kind)
+static int	_is_able_to_solve_2(t_game *game, t_kind kind)
 {
 	const int		rev = kind == OF_STACK_B;
 	unsigned int	r0;
@@ -29,11 +29,9 @@ int	is_able_to_solve_2(t_game *game, t_kind kind)
 
 void	solve_2(t_game *game)
 {
-	int	a;
-	int	b;
+	const int	a = _is_able_to_solve_2(game, OF_STACK_A);
+	const int	b = _is_able_to_solve_2(game, OF_STACK_B);
 
-	a = is_able_to_solve_2(game, OF_STACK_A);
-	b = is_able_to_solve_2(game, OF_STACK_B);
 	if (a && b)
 		write_op(game, SS);
 	else if (a)
@@ -42,29 +40,47 @@ void	solve_2(t_game *game)
 		write_op(game, SB);
 }
 
-void	solve_only_3(t_game *game, t_kind kind)
+static t_operation	_suitable_op_only_3(t_game *game, t_kind kind)
 {
 	const int		rev = kind == OF_STACK_B;
-	t_operation		op;
 	unsigned int	r0;
 	unsigned int	r1;
 	unsigned int	r2;
 
 	if (game->count[kind] != 3)
-		return ;
+		return (NOP);
 	r0 = game->stack[kind]->rank;
 	r1 = game->stack[kind]->next->rank;
 	r2 = game->stack[kind]->next->next->rank;
 	if (((r0 < r1) ^ rev) && ((r1 < r2) ^ rev))
-		return ;
+		return (NOP);
 	if (((r1 > r0) ^ rev) && ((r1 > r2) ^ rev))
-		op = REVERSE | ROTATE;
+		return (REVERSE | ROTATE);
 	else if (((r0 > r1) ^ rev) && (r0 > r2) ^ rev)
-		op = ROTATE;
+		return (ROTATE);
 	else
-		op = SWAP;
-	write_op(game, op_for_kind(kind, op));
-	solve_only_3(game, kind);
+		return (SWAP);
+}
+
+void	solve_only_3(t_game *game)
+{
+	const t_operation	a = _suitable_op_only_3(game, OF_STACK_A);
+	const t_operation	b = _suitable_op_only_3(game, OF_STACK_B);
+
+	if (a == b)
+	{
+		if (a == NOP)
+			return ;
+		write_op(game, b | FOR_SAME);
+	}
+	else
+	{
+		if (a != NOP)
+			write_op(game, a | FOR_A);
+		if (b != NOP)
+			write_op(game, b | FOR_B);
+	}
+	solve_only_3(game);
 }
 
 int	solve_mini(t_game *game)
@@ -85,8 +101,7 @@ int	solve_mini(t_game *game)
 			i++;
 		}
 	}
-	solve_only_3(game, OF_STACK_A);
-	solve_only_3(game, OF_STACK_B);
+	solve_only_3(game);
 	solve_2(game);
 	i = game->count[OF_STACK_B];
 	while (i-- > 0)
