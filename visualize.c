@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 00:47:09 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 03:39:26 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 18:33:29 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	_putnbr_int(int n)
 	}
 	if (sign)
 		buf[--i] = '-';
-	put_safe(buf + i, sizeof(buf) - i);
+	write_safe(STDOUT_FILENO, buf + i, sizeof(buf) - i);
 }
 
 static void	_visualize_stack(t_elem *stack, size_t count)

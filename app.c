@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 17:46:29 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 18:29:07 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	main(int argc, char *argv[])
 	i = _process_option(&game, argc, argv);
 	while (i < argc)
 		game.length += ft_split_count(argv[i++], " ");
-	game.table = ft_calloc(game.length, sizeof(t_elem));
+	game.table = calloc_safe(game.length, sizeof(*game.table));
 	exit_status = EXIT_FAILURE;
 	if (game.table && _fill(game.table, argc, argv) && _assign(&game))
 	{
@@ -115,7 +115,7 @@ int	main(int argc, char *argv[])
 			run_solver(&game);
 	}
 	else
-		write(STDERR_FILENO, "Error\n", 6);
+		write_safe(STDERR_FILENO, "Error\n", 6);
 	game_free(&game);
 	return (exit_status);
 }

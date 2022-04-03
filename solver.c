@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 17:49:51 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 18:30:35 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,7 @@ void	write_op(t_game *game, t_operation op)
 	if (capacity <= game->op_size)
 	{
 		detach = game->op_vector;
-		attach = ft_calloc(capacity + VECTOR_SIZE, sizeof(t_operation));
-		if (!attach)
-			exit(EXIT_FAILURE);
+		attach = calloc_safe(capacity + VECTOR_SIZE, sizeof(*attach));
 		if (detach)
 			ft_memcpy(attach, detach, capacity * sizeof(t_operation));
 		free(detach);

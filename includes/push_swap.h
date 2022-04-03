@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 17:54:20 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 18:23:09 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct s_part
 ** game.c
 */
 void		game_link(t_game *game);
+t_game		*game_copy(t_game *dest, t_game *src);
 void		game_free(t_game *game);
 
 /*
@@ -194,11 +195,17 @@ char		**ft_split(const char *s, const char *set);
 char		**ft_split_free(char **ptr);
 
 /*
+** safe_mem.c
+*/
+void		*malloc_safe(size_t size);
+void		*calloc_safe(size_t count, size_t size);
+
+/*
 ** safe_io.c
 */
-int			get_safe(void *buf, size_t len);
+int			read_safe(int fd, void *buf, size_t len);
 int			getchar_safe(void);
-void		put_safe(const void *buf, size_t len);
+void		write_safe(int fd, const void *buf, size_t len);
 void		putchar_safe(char c);
 void		putstr_safe(const char *str);
 

@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 17:50:43 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 18:35:16 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	solve_only_3(t_game *game, t_kind kind)
 	solve_only_3(game, kind);
 }
 
-int	do_game_mini(t_game *game)
+int	solve_mini(t_game *game)
 {
 	unsigned int	i;
 
