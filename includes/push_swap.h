@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 12:40:25 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 17:54:20 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,21 +134,8 @@ typedef struct s_part
 /*
 ** game.c
 */
-void		do_game(t_game *game);
-void		write_op(t_game *game, t_operation op);
-
-/*
-** game_mini.c
-*/
-int			is_able_to_game_2(t_game *game, t_kind kind);
-void		do_game_2(t_game *game);
-void		do_game_3(t_game *game, t_kind kind);
-int			do_game_mini(t_game *game);
-
-/*
-** game_qsort.c
-*/
-void		qsort_partition(t_game *game, t_kind kind, t_part *parent);
+void		game_link(t_game *game);
+void		game_free(t_game *game);
 
 /*
 ** checker.c
@@ -156,15 +143,34 @@ void		qsort_partition(t_game *game, t_kind kind, t_part *parent);
 int			run_checker(t_game *game);
 
 /*
-** visualize.c
+** solver.c
 */
-void		visualize(const char *title, t_game *game);
-void		visualize_gerror(const char *title, t_gerror err);
+void		run_solver(t_game *game);
+void		write_op(t_game *game, t_operation op);
+
+/*
+** solver_mini.c
+*/
+int			is_able_to_solve_2(t_game *game, t_kind kind);
+void		solve_2(t_game *game);
+void		solve_only_3(t_game *game, t_kind kind);
+int			solve_mini(t_game *game);
+
+/*
+** solver_qsort.c
+*/
+void		solve_qsort(t_game *game);
 
 /*
 ** operation.c
 */
 void		apply_op(t_game *game, t_operation op);
+
+/*
+** visualize.c
+*/
+void		visualize(const char *title, t_game *game);
+void		visualize_gerror(const char *title, t_gerror err);
 
 /*
 ** util.c

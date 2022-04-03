@@ -6,114 +6,38 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 12:03:30 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 17:44:34 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	_put_op(t_operation op)
-{
-	char	c;
-
-	if (op & SWAP)
-		c = 's';
-	else if (op & PUSH)
-		c = 'p';
-	else if (op & ROTATE)
-		c = 'r';
-	else
-		return ;
-	if (op & REVERSE)
-		putchar_safe('r');
-	putchar_safe(c);
-	if ((op & FOR_A) && (op & FOR_B))
-		putchar_safe(c);
-	else if (op & FOR_A)
-		putchar_safe('a');
-	else if (op & FOR_B)
-		putchar_safe('b');
-	putchar_safe('\n');
-}
-
-static void	_optimize(t_game *game)
+void	game_link(t_game *game)
 {
 	size_t	i;
-	size_t	j;
 
-	i = 0;
-	while (i < game->op_size)
+	if (game->length > 0)
 	{
-		if (game->op_vector[i] & ROTATE)
+		i = 0;
+		while (i < game->length - 1)
 		{
-			j = i;
-			while (j < game->op_size)
-			{
-				if (game->op_vector[j] == (REVERSE ^ game->op_vector[i]))
-				{
-					game->op_vector[i] = NOP;
-					game->op_vector[j] = NOP;
-					game->op_optimize += 2;
-					break ;
-				}
-				else if (game->op_vector[j] != game->op_vector[i])
-					break ;
-				j++;
-			}
+			game->table[i].next = &game->table[i + 1];
+			game->table[i + 1].prev = &game->table[i];
+			i++;
 		}
-		i++;
+		game->table[i].next = &game->table[0];
+		game->table[0].prev = &game->table[i];
 	}
-}
-
-void	write_op(t_game *game, t_operation op)
-{
-	const size_t	capacity = game->op_capacity;
-	t_operation		*detach;
-	t_operation		*attach;
-
-#ifdef __DEBUG
-	(void)capacity, (void)detach, (void)attach;
-	_put_op(op);
-	game->op_size++;
-#else
-	if (capacity <= game->op_size)
-	{
-		detach = game->op_vector;
-		attach = ft_calloc(capacity + VECTOR_SIZE, sizeof(t_operation));
-		if (!attach)
-			exit(EXIT_FAILURE);
-		if (detach)
-			ft_memcpy(attach, detach, capacity * sizeof(t_operation));
-		free(detach);
-		game->op_vector = attach;
-		game->op_capacity += VECTOR_SIZE;
-	}
-	game->op_vector[game->op_size++] = op;
-#endif
-	apply_op(game, op);
-}
-
-void	do_game(t_game *game)
-{
-	t_part	root;
-	size_t	i;
-
-	if (!is_sort_completed(game) && !do_game_mini(game))
-	{
-		root.start = 0;
-		root.length = game->length;
-		root.reverse = 0;
-		qsort_partition(game, OF_STACK_A, &root);
-	}
-#ifndef __DEBUG
-	_optimize(game);
-	i = 0;
-	while (i < game->op_size)
-		_put_op(game->op_vector[i++]);
-#else
-	if (i = 0, i)
-		_optimize(game);
-#endif
+	game->stack[OF_STACK_A] = &game->table[0];
+	game->count[OF_STACK_A] = game->length;
+	game->stack[OF_STACK_B] = NULL;
+	game->count[OF_STACK_B] = 0;
 	if (game->opt_visual)
-		visualize("Not implemented. KO :(", game);
+		visualize("_link", game);
+}
+
+void	game_free(t_game *game)
+{
+	free(game->table);
+	free(game->op_vector);
 }

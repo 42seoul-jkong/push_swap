@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 02:39:58 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 17:46:29 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,58 +35,6 @@ static int	_process_option(t_game *game, int argc, char *argv[])
 			break ;
 	}
 	return (i);
-}
-
-static void	_link(t_game *game)
-{
-	size_t	i;
-
-	if (game->length > 0)
-	{
-		i = 0;
-		while (i < game->length - 1)
-		{
-			game->table[i].next = &game->table[i + 1];
-			game->table[i + 1].prev = &game->table[i];
-			i++;
-		}
-		game->table[i].next = &game->table[0];
-		game->table[0].prev = &game->table[i];
-	}
-	game->stack[OF_STACK_A] = &game->table[0];
-	game->count[OF_STACK_A] = game->length;
-	game->stack[OF_STACK_B] = NULL;
-	game->count[OF_STACK_B] = 0;
-	if (game->opt_visual)
-		visualize("_link", game);
-}
-
-static int	_assign(t_game *game)
-{
-	size_t			i;
-	size_t			j;
-	unsigned int	rank;
-
-	i = 0;
-	while (i < game->length)
-	{
-		rank = 0;
-		j = 0;
-		while (j < i)
-		{
-			if (game->table[i].number == game->table[j].number)
-				return (0);
-			if (game->table[i].number > game->table[j].number)
-				rank++;
-			else
-				game->table[j].rank++;
-			j++;
-		}
-		game->table[i].rank = rank;
-		i++;
-	}
-	_link(game);
-	return (1);
 }
 
 static int	_fill(t_elem *table, int argc, char *argv[])
@@ -118,6 +66,33 @@ static int	_fill(t_elem *table, int argc, char *argv[])
 	return (i == argc);
 }
 
+static int	_assign(t_game *game)
+{
+	size_t			i;
+	size_t			j;
+	unsigned int	rank;
+
+	i = 0;
+	while (i < game->length)
+	{
+		rank = 0;
+		j = 0;
+		while (j < i)
+		{
+			if (game->table[i].number == game->table[j].number)
+				return (0);
+			if (game->table[i].number > game->table[j].number)
+				rank++;
+			else
+				game->table[j].rank++;
+			j++;
+		}
+		game->table[i].rank = rank;
+		i++;
+	}
+	return (1);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_game	game;
@@ -133,14 +108,14 @@ int	main(int argc, char *argv[])
 	if (game.table && _fill(game.table, argc, argv) && _assign(&game))
 	{
 		exit_status = EXIT_SUCCESS;
+		game_link(&game);
 		if (game.opt_debug)
 			exit_status = run_checker(&game);
 		else
-			do_game(&game);
+			run_solver(&game);
 	}
 	else
 		write(STDERR_FILENO, "Error\n", 6);
-	free(game.table);
-	free(game.op_vector);
+	game_free(&game);
 	return (exit_status);
 }

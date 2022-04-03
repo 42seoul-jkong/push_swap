@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game_qsort.c                                       :+:      :+:    :+:   */
+/*   solver_qsort.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 23:42:57 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 16:40:32 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 17:51:31 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static int	_end(t_game *game, t_kind kind, t_part *parent)
 			write_op(game, op_for_kind(kind, REVERSE | ROTATE));
 	}
 	if (only3)
-		do_game_3(game, kind);
+		solve_only_3(game, kind);
 	else if (len2)
-		do_game_2(game);
+		solve_2(game);
 	if (kind == OF_STACK_B)
 	{
 		i = parent->length;
@@ -77,7 +77,7 @@ static int	_contains_part(t_part *part, unsigned int rank)
 	return (start <= rank && rank < end);
 }
 
-void	qsort_partition(t_game *game, t_kind kind, t_part *parent)
+static void	_qsort_partition(t_game *game, t_kind kind, t_part *parent)
 {
 	size_t		i;
 	t_part		child[STACK_KIND_N];
@@ -105,8 +105,8 @@ void	qsort_partition(t_game *game, t_kind kind, t_part *parent)
 	}
 	if (!parent->reverse)
 		child[kind].reverse = game->count[kind] != child[kind].length;
-	qsort_partition(game, OF_STACK_A, &child[OF_STACK_A]);
-	qsort_partition(game, OF_STACK_B, &child[OF_STACK_B]);
+	_qsort_partition(game, OF_STACK_A, &child[OF_STACK_A]);
+	_qsort_partition(game, OF_STACK_B, &child[OF_STACK_B]);
 #ifdef __DEBUG
 	if (game->opt_visual)
 	{
@@ -115,4 +115,14 @@ void	qsort_partition(t_game *game, t_kind kind, t_part *parent)
 		__depth--;
 	}
 #endif
+}
+
+void	solve_qsort(t_game *game)
+{
+	t_part	root;
+
+	root.start = 0;
+	root.length = game->length;
+	root.reverse = 0;
+	_qsort_partition(game, OF_STACK_A, &root);
 }

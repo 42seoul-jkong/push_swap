@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game_mini.c                                        :+:      :+:    :+:   */
+/*   solver_mini.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 01:02:26 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 03:09:47 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 17:50:43 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	is_able_to_game_2(t_game *game, t_kind kind)
+int	is_able_to_solve_2(t_game *game, t_kind kind)
 {
 	const int		rev = kind == OF_STACK_B;
 	unsigned int	r0;
@@ -27,13 +27,13 @@ int	is_able_to_game_2(t_game *game, t_kind kind)
 	return (1);
 }
 
-void	do_game_2(t_game *game)
+void	solve_2(t_game *game)
 {
 	int	a;
 	int	b;
 
-	a = is_able_to_game_2(game, OF_STACK_A);
-	b = is_able_to_game_2(game, OF_STACK_B);
+	a = is_able_to_solve_2(game, OF_STACK_A);
+	b = is_able_to_solve_2(game, OF_STACK_B);
 	if (a && b)
 		write_op(game, SS);
 	else if (a)
@@ -42,7 +42,7 @@ void	do_game_2(t_game *game)
 		write_op(game, SB);
 }
 
-void	do_game_3(t_game *game, t_kind kind)
+void	solve_only_3(t_game *game, t_kind kind)
 {
 	const int		rev = kind == OF_STACK_B;
 	t_operation		op;
@@ -64,7 +64,7 @@ void	do_game_3(t_game *game, t_kind kind)
 	else
 		op = SWAP;
 	write_op(game, op_for_kind(kind, op));
-	do_game_3(game, kind);
+	solve_only_3(game, kind);
 }
 
 int	do_game_mini(t_game *game)
@@ -85,9 +85,9 @@ int	do_game_mini(t_game *game)
 			i++;
 		}
 	}
-	do_game_3(game, OF_STACK_A);
-	do_game_3(game, OF_STACK_B);
-	do_game_2(game);
+	solve_only_3(game, OF_STACK_A);
+	solve_only_3(game, OF_STACK_B);
+	solve_2(game);
 	i = game->count[OF_STACK_B];
 	while (i-- > 0)
 		write_op(game, PA);
