@@ -6,14 +6,17 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 23:42:57 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 03:26:06 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 16:40:32 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+#ifdef __DEBUG
 		#include <stdio.h>
 		#include <stdarg.h>
+
+		static int __depth;
 
 		static char *__format(char *format, ...)
 		{
@@ -24,7 +27,7 @@
 			va_end(va);
 			return dest;
 		}
-		static int __depth;
+#endif
 
 static int	_end(t_game *game, t_kind kind, t_part *parent)
 {
@@ -41,9 +44,9 @@ static int	_end(t_game *game, t_kind kind, t_part *parent)
 		while (i-- > 0)
 			write_op(game, op_for_kind(kind, REVERSE | ROTATE));
 	}
-	if (parent->length == 3)
+	if (only3)
 		do_game_3(game, kind);
-	else
+	else if (len2)
 		do_game_2(game);
 	if (kind == OF_STACK_B)
 	{
@@ -56,17 +59,22 @@ static int	_end(t_game *game, t_kind kind, t_part *parent)
 
 static void	_half_part(t_part *parent, t_part child[STACK_KIND_N])
 {
+	const size_t	half_length = parent->length / 2;
+
 	child[OF_STACK_B].start = parent->start;
-	child[OF_STACK_B].length = parent->length / 2;
+	child[OF_STACK_B].length = half_length;
 	child[OF_STACK_B].reverse = 0;
-	child[OF_STACK_A].start = parent->start + child[OF_STACK_B].length;
-	child[OF_STACK_A].length = parent->length - child[OF_STACK_B].length;
+	child[OF_STACK_A].start = parent->start + half_length;
+	child[OF_STACK_A].length = parent->length - half_length;
 	child[OF_STACK_A].reverse = 0;
 }
 
 static int	_contains_part(t_part *part, unsigned int rank)
 {
-	return (part->start <= rank && rank < part->start + part->length);
+	const unsigned int	start = part->start;
+	const unsigned int	end = start + part->length;
+
+	return (start <= rank && rank < end);
 }
 
 void	qsort_partition(t_game *game, t_kind kind, t_part *parent)
@@ -76,12 +84,14 @@ void	qsort_partition(t_game *game, t_kind kind, t_part *parent)
 
 	if (_end(game, kind, parent))
 		return ;
+#ifdef __DEBUG
 	if (game->opt_visual)
 	{
 		__depth++;
 		visualize(__format("Partition Created. at %c [ %d ] ( %d, %d )", 'A' + (kind == OF_STACK_B), __depth, parent->start, parent->length), game);
-		getchar_safe();
+//		getchar_safe();
 	}
+#endif
 	_half_part(parent, child);
 	i = parent->length;
 	while (i-- > 0)
@@ -97,10 +107,12 @@ void	qsort_partition(t_game *game, t_kind kind, t_part *parent)
 		child[kind].reverse = game->count[kind] != child[kind].length;
 	qsort_partition(game, OF_STACK_A, &child[OF_STACK_A]);
 	qsort_partition(game, OF_STACK_B, &child[OF_STACK_B]);
+#ifdef __DEBUG
 	if (game->opt_visual)
 	{
 		visualize(__format("Partition Removed. at %c [ %d ] ( %d(%d | %d), %d(%d | %d) )", 'A' + (kind == OF_STACK_B), __depth, parent->start, child[0].start, child[1].start, parent->length, child[0].length, child[1].length), game);
-		getchar_safe();
+//		getchar_safe();
 		__depth--;
 	}
+#endif
 }

@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 03:38:11 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 12:40:25 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void		write_op(t_game *game, t_operation op);
 /*
 ** game_mini.c
 */
+int			is_able_to_game_2(t_game *game, t_kind kind);
 void		do_game_2(t_game *game);
 void		do_game_3(t_game *game, t_kind kind);
 int			do_game_mini(t_game *game);

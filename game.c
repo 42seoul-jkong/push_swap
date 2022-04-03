@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 03:59:09 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/03 12:03:30 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ void	write_op(t_game *game, t_operation op)
 	t_operation		*detach;
 	t_operation		*attach;
 
+#ifdef __DEBUG
+	(void)capacity, (void)detach, (void)attach;
+	_put_op(op);
+	game->op_size++;
+#else
 	if (capacity <= game->op_size)
 	{
 		detach = game->op_vector;
@@ -84,6 +89,7 @@ void	write_op(t_game *game, t_operation op)
 		game->op_capacity += VECTOR_SIZE;
 	}
 	game->op_vector[game->op_size++] = op;
+#endif
 	apply_op(game, op);
 }
 
@@ -99,10 +105,15 @@ void	do_game(t_game *game)
 		root.reverse = 0;
 		qsort_partition(game, OF_STACK_A, &root);
 	}
+#ifndef __DEBUG
 	_optimize(game);
 	i = 0;
 	while (i < game->op_size)
 		_put_op(game->op_vector[i++]);
+#else
+	if (i = 0, i)
+		_optimize(game);
+#endif
 	if (game->opt_visual)
 		visualize("Not implemented. KO :(", game);
 }
