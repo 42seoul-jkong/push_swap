@@ -141,6 +141,7 @@ void		game_free(t_game *game);
 ** checker.c
 */
 int			run_checker(t_game *game);
+int			is_sort_completed(t_game *game);
 
 /*
 ** solver.c

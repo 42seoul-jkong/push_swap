@@ -116,5 +116,10 @@ void	run_solver(t_game *game)
 		_optimize(game);
 #endif
 	if (game->opt_visual)
+	{
+		if (is_sort_completed(game))
+			visualize("Diff OK :)", game);
+		else
 		visualize("Not implemented. KO :(", game);
+	}
 }

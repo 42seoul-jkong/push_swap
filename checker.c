@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:19:05 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/04 02:18:28 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/04 21:48:23 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static t_operation	_read_op(void)
 	return (_find_op(str));
 }
 
-static int	_is_sort_completed(t_game *game)
+int	is_sort_completed(t_game *game)
 {
 	t_part	all;
 
@@ -79,7 +79,7 @@ static t_gerror	_check(t_game *game, t_operation latest_op)
 		return (GAME_FAILURE_B_COUNT);
 	if (game->count[OF_STACK_A] != game->length)
 		return (GAME_FAILURE_A_COUNT);
-	if (!_is_sort_completed(game))
+	if (!is_sort_completed(game))
 		return (GAME_FAILURE_SORT);
 	if (game->stack[OF_STACK_B] != NULL)
 		return (GAME_FAILURE_UNKNOWN);
