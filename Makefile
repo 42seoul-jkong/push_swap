@@ -22,7 +22,7 @@ RM = rm -f
 TARGET = push_swap
 
 SRCS_BASE = app.c game.c checker.c \
-			solver.c solver_mini.c solver_simple.c solver_qsort.c \
+			solver.c solver_mini.c solver_fast.c solver_qsort.c \
 			operation.c visualize.c util.c \
 			libft.c libft_try_atoi.c libft_split.c \
 			safe_mem.c safe_io.c

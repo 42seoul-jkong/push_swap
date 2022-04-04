@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/04 02:28:17 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 03:16:35 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define PUSH_SWAP_H
 
 # include <stdlib.h>
+# include <stdint.h>
 # include <unistd.h>
-# include <limits.h>
 
 # define VECTOR_SIZE 1024
 
@@ -156,9 +156,9 @@ void		solve_2(t_game *game);
 void		solve_only_3(t_game *game);
 
 /*
-** solver_simple.c
+** solver_fast.c
 */
-int			try_solve_simple(t_game *game);
+int			try_solve_fast(t_game *game);
 
 /*
 ** solver_qsort.c

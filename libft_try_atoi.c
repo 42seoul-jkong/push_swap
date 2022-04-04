@@ -67,10 +67,10 @@ int	ft_try_atoi(const char *str, int *out)
 	j = 0;
 	while (_isdigit(str[i + j]))
 		j++;
-	if (j > _nbrlen(INT_MAX) || str[i + j])
+	if (j > _nbrlen(INT32_MAX) || str[i + j])
 		return (0);
 	number = _atol(str);
-	if (number < INT_MIN || number > INT_MAX)
+	if (number < INT32_MIN || number > INT32_MAX)
 		return (0);
 	*out = number;
 	return (1);
