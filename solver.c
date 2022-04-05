@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/05 16:51:29 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 20:56:58 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ void	run_solver(t_game *game)
 {
 	size_t	i;
 
+	if (game->opt_visual)
+		visualize("run_solver", game);
 	solve_qsort(game);
 	_optimize(game);
 	i = 0;

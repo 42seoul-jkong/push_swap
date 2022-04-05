@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/05 17:47:27 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 20:52:58 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ typedef enum e_gerror
 	GAME_FAILURE_SORT,
 	GAME_FAILURE_A_COUNT,
 	GAME_FAILURE_B_COUNT,
-	GAME_FAILURE_UNDEFINED_OPERATION,
 	GAME_FAILURE_UNKNOWN = -1,
 }	t_gerror;
 
@@ -132,8 +131,16 @@ typedef struct s_part
 }	t_part;
 
 /*
+** app_solver.c | app_checker.c
+*/
+int			app_run(t_game *game);
+
+/*
+** Push Swap Game Management
 ** game.c
 */
+int			game_fill(t_elem *table, int argc, char *argv[], int i);
+int			game_assign(t_game *game);
 void		game_link(t_game *game);
 void		game_free(t_game *game);
 
@@ -155,7 +162,6 @@ void		write_op(t_game *game, t_operation op);
 */
 void		solve_2(t_game *game, t_kind kind);
 void		try_swap(t_game *game, t_kind kind);
-int			half_4(t_game *game, t_kind kind, t_part *inverse);
 void		solve_3(t_game *game, t_kind kind);
 
 /*

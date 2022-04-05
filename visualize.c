@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 00:47:09 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 18:33:29 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 20:53:47 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,11 @@ void	visualize_gerror(const char *title, t_gerror err)
 	_putnbr_int(err);
 	putstr_safe("\n\tMessage: ");
 	if (err == GAME_FAILURE_SORT)
-		putstr_safe("Not sorted on stack A");
+		putstr_safe("Not completed sort");
 	else if (err == GAME_FAILURE_A_COUNT)
 		putstr_safe("All elements not collected at stack A");
 	else if (err == GAME_FAILURE_B_COUNT)
 		putstr_safe("Any elements was remaining in stack B");
-	else if (err == GAME_FAILURE_UNDEFINED_OPERATION)
-		putstr_safe("Undefined instruction detected");
 	else if (err == GAME_FAILURE_UNKNOWN)
 		putstr_safe("Unknown reason");
 	putstr_safe("\n\n");

@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 23:42:57 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/05 17:48:48 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 20:17:45 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,34 @@ static void	_half_part(t_part *parent, t_part child[STACK_KIND_N])
 	child[OF_STACK_A].reverse = 0;
 }
 
+static int	_exact_half(t_game *game, t_kind kind, t_part *inverse)
+{
+	t_elem			*elem;
+	size_t			i;
+
+	elem = game->stack[kind];
+	i = inverse->length;
+	if (i > game->count[kind])
+		return (0);
+	while (i-- > 0)
+	{
+		if (!contains_part(inverse, elem->rank))
+		{
+			if (!(i == 0 && contains_part(inverse, elem->next->rank)))
+				return (0);
+		}
+		elem = elem->next;
+	}
+	i = inverse->length;
+	while (i-- > 0)
+	{
+		if (i == 0)
+			try_swap(game, kind);
+		write_op(game, op_for_kind(inverse_kind(kind), PUSH));
+	}
+	return (1);
+}
+
 static void	_qsort_partition(t_game *game, t_kind kind, t_part *parent)
 {
 	size_t		i;
@@ -63,7 +91,7 @@ static void	_qsort_partition(t_game *game, t_kind kind, t_part *parent)
 	i = parent->length;
 	_half_part(parent, child);
 	inverse = &child[inverse_kind(kind)];
-	if (!(!parent->reverse && i == 4 && half_4(game, kind, inverse)))
+	if (!(!parent->reverse && _exact_half(game, kind, inverse)))
 	{
 		while (i-- > 0)
 		{
