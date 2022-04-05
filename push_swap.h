@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/05 20:52:58 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/06 01:04:11 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdint.h>
 # include <unistd.h>
 
+# define BUFFER_SIZE 5
 # define VECTOR_SIZE 1024
 # define EXIT_KO 2
 

@@ -14,9 +14,6 @@
 .PHONY: all clean fclean re bonus
 
 CC = cc
-CFLAGS = -I $(INCLUDES_DIR)
-C_WARNING_FLAGS = all extra error
-CFLAGS += $(addprefix -W, $(C_WARNING_FLAGS))
 RM = rm -f
 
 SRCS_BASE = app.c game.c checker.c \
@@ -25,6 +22,7 @@ SRCS_BASE = app.c game.c checker.c \
 			libft.c libft_try_atoi.c libft_split.c \
 			safe_mem.c safe_io.c
 OBJECTS_DIR = objs/
+HEADER = push_swap.h
 
 TARGET = push_swap
 SRCS = $(SRCS_BASE) app_solver.c
@@ -35,13 +33,15 @@ TARGET_BONUS = checker
 SRCS_BONUS = $(SRCS_BASE) app_checker.c
 OBJS_BONUS = $(addprefix $(OBJECTS_DIR), $(SRCS_BONUS:.c=.o))
 
-INCLUDES_DIR = includes/
-HEADER_BASE = push_swap.h
-HDRS = $(addprefix $(INCLUDES_DIR), $(HEADER_BASE))
+C_SANITIZER_FLAGS = address undefined
+CFLAGS += $(addprefix -fsanitize=, $(C_SANITIZER_FLAGS))
+LDFLAGS += $(addprefix -fsanitize=, $(C_SANITIZER_FLAGS))
 
-#C_DEBUG_FLAGS = -g3 -fsanitize=address
-CFLAGS += $(C_DEBUG_FLAGS)
-LDFLAGS += $(C_DEBUG_FLAGS)
+C_WARNING_FLAGS = all extra error
+CFLAGS += $(addprefix -W, $(C_WARNING_FLAGS))
+
+C_DEBUG_FLAGS = g3
+CFLAGS += $(addprefix -, $(C_DEBUG_FLAGS))
 
 all: $(TARGET) bonus
 clean:					;	$(RM) -r $(OBJECTS_DIR)
@@ -52,7 +52,7 @@ bonus: $(TARGET_BONUS)
 $(OBJECTS_DIR):
 	mkdir $(OBJECTS_DIR)
 
-$(OBJS) $(OBJS_BONUS): $(HDRS) | $(OBJECTS_DIR)
+$(OBJS) $(OBJS_BONUS): $(HEADER) | $(OBJECTS_DIR)
 
 $(addprefix $(OBJECTS_DIR), %.o): %.c
 	$(CC) -c $(CFLAGS) $< -o $@

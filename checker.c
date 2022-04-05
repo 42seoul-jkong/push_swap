@@ -6,13 +6,13 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:19:05 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/05 21:15:11 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/06 01:42:02 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static t_operation	_find_op(char str[5])
+static t_operation	_find_op(char str[BUFFER_SIZE])
 {
 	if (ft_strcmp(str, "sa") == 0)
 		return (SA);
@@ -41,24 +41,31 @@ static t_operation	_find_op(char str[5])
 
 static t_operation	_read_op(void)
 {
-	char		str[5];
-	int			i;
+	char		str[BUFFER_SIZE];
 	const int	count = sizeof(str) / sizeof(*str);
+	int			i;
+	int			input;
+	t_operation	op;
 
 	i = 0;
-	while (i < count)
+	input = -1;
+	while (i < count - 1)
 	{
-		str[i] = getchar_safe();
-		if (str[i] < 0 || str[i] == '\n')
+		input = getchar_safe();
+		if (input < 0 || input == '\n')
 			break ;
-		i++;
+		str[i++] = input;
 	}
-	if (i == 0 && str[i] < 0)
+	if (i == 0 && input < 0)
 		return (NOP);
-	if (i == count || str[i] != '\n')
-		return (NONE);
 	str[i] = '\0';
-	return (_find_op(str));
+	op = _find_op(str);
+	if (op == NONE)
+	{
+		while (input >= 0 && input != '\n')
+			input = getchar_safe();
+	}
+	return (op);
 }
 
 int	is_sort_completed(t_game *game)
