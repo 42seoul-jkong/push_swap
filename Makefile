@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 .SUFFIXES: .c .o .h
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
 
 CC = gcc
 CFLAGS = -I $(INCLUDES_DIR)
@@ -39,14 +39,15 @@ INCLUDES_DIR = includes/
 HEADER_BASE = push_swap.h
 HDRS = $(addprefix $(INCLUDES_DIR), $(HEADER_BASE))
 
-C_DEBUG_FLAGS = -g3 -fsanitize=address
+#C_DEBUG_FLAGS = -g3 -fsanitize=address
 CFLAGS += $(C_DEBUG_FLAGS)
 LDFLAGS += $(C_DEBUG_FLAGS)
 
-all: $(TARGET) $(TARGET_BONUS)
-clean:			;	$(RM) -r $(OBJECTS_DIR)
-fclean: clean	;	$(RM) $(TARGET)
+all: $(TARGET) bonus
+clean:					;	$(RM) -r $(OBJECTS_DIR)
+fclean: clean			;	$(RM) $(TARGET) $(TARGET_BONUS)
 re: fclean all
+bonus: $(TARGET_BONUS)
 
 $(OBJECTS_DIR):
 	mkdir $(OBJECTS_DIR)

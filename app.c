@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/05 19:59:11 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 21:14:05 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	main(int argc, char *argv[])
 	i = start;
 	while (i < argc)
 		game.length += ft_split_count(argv[i++], " ");
+	if (game.length == 0)
+		return (EXIT_SUCCESS);
 	game.table = calloc_safe(game.length, sizeof(*game.table));
 	if (!game_fill(game.table, argc, argv, start) || !game_assign(&game))
 		exit_error();
