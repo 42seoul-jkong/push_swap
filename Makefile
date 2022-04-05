@@ -13,7 +13,7 @@
 .SUFFIXES: .c .o .h
 .PHONY: all clean fclean re bonus
 
-CC = gcc
+CC = cc
 CFLAGS = -I $(INCLUDES_DIR)
 C_WARNING_FLAGS = all extra error
 CFLAGS += $(addprefix -W, $(C_WARNING_FLAGS))
