@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:42:17 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/05 03:16:35 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 17:47:27 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 
 # define VECTOR_SIZE 1024
+# define EXIT_KO 2
 
 typedef enum e_kind
 {
@@ -134,7 +135,6 @@ typedef struct s_part
 ** game.c
 */
 void		game_link(t_game *game);
-t_game		*game_copy(t_game *dest, t_game *src);
 void		game_free(t_game *game);
 
 /*
@@ -150,15 +150,13 @@ void		run_solver(t_game *game);
 void		write_op(t_game *game, t_operation op);
 
 /*
+** solver_micro.c
 ** solver_mini.c
 */
-void		solve_2(t_game *game);
-void		solve_only_3(t_game *game);
-
-/*
-** solver_fast.c
-*/
-int			try_solve_fast(t_game *game);
+void		solve_2(t_game *game, t_kind kind);
+void		try_swap(t_game *game, t_kind kind);
+int			half_4(t_game *game, t_kind kind, t_part *inverse);
+void		solve_3(t_game *game, t_kind kind);
 
 /*
 ** solver_qsort.c
@@ -182,9 +180,14 @@ void		visualize_gerror(const char *title, t_gerror err);
 int			is_sorted(t_game *game, t_kind kind, t_part *part);
 t_operation	op_for_kind(t_kind kind, t_operation op);
 t_kind		inverse_kind(t_kind kind);
+int			contains_part(t_part *part, unsigned int rank);
+void		exit_error(void);
 
 /*
-** Forty-Two Library Functions (libft*.c)
+** Forty-Two Library Functions
+** libft.c
+** libft_try_atoi.c
+** libft_split.c
 */
 size_t		ft_strlen(const char *s);
 void		*ft_memset(void *b, int c, size_t len);
@@ -208,7 +211,7 @@ void		*calloc_safe(size_t count, size_t size);
 int			read_safe(int fd, void *buf, size_t len);
 int			getchar_safe(void);
 void		write_safe(int fd, const void *buf, size_t len);
-void		putchar_safe(char c);
 void		putstr_safe(const char *str);
+void		puterr_safe(const char *str);
 
 #endif

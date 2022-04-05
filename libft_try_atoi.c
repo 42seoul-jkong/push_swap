@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:19:54 by jkong             #+#    #+#             */
-/*   Updated: 2022/03/25 16:18:10 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 16:47:40 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ int	ft_try_atoi(const char *str, int *out)
 	if (!out)
 		return (0);
 	*out = 0;
-	i = *str == '+' || *str == '-';
+	i = 0;
+	if (*str == '+' || *str == '-')
+		i++;
 	while (str[i] == '0')
 		i++;
 	j = 0;

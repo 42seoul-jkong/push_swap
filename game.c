@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/03 18:33:00 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 16:37:07 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,6 @@ void	game_link(t_game *game)
 	game->count[OF_STACK_B] = 0;
 	if (game->opt_visual)
 		visualize("_link", game);
-}
-
-static t_elem	*_table_duplicate(t_elem *table, size_t length)
-{
-	t_elem	*result;
-
-	if (!table)
-		return (NULL);
-	result = calloc_safe(length, sizeof(*result));
-	ft_memcpy(result, table, length * sizeof(t_elem));
-	return (result);
-}
-
-t_game	*game_copy(t_game *dest, t_game *src)
-{
-	ft_memset(dest, 0, sizeof(*dest));
-	dest->length = src->length;
-	dest->table = _table_duplicate(src->table, src->length);
-	game_link(dest);
-	dest->opt_debug = src->opt_debug;
-	dest->opt_visual = src->opt_visual;
-	return (dest);
 }
 
 void	game_free(t_game *game)

@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 02:20:43 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/04 02:02:13 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 17:46:09 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	is_sorted(t_game *game, t_kind kind, t_part *part)
 		elem = elem->prev;
 	r = part->start + ((part->reverse ^ rev) * (part->length - 1));
 	i = part->length;
+	if (i > game->count[kind])
+		return (0);
 	while (i-- > 0)
 	{
 		if (elem->rank != r)
@@ -53,4 +55,18 @@ t_kind	inverse_kind(t_kind kind)
 	if (kind == OF_STACK_B)
 		return (OF_STACK_A);
 	return (kind ^ 1);
+}
+
+int	contains_part(t_part *part, unsigned int rank)
+{
+	const unsigned int	start = part->start;
+	const unsigned int	end = start + part->length;
+
+	return (start <= rank && rank < end);
+}
+
+void	exit_error(void)
+{
+	puterr_safe("Error\n");
+	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/05 02:06:55 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 16:51:29 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 static void	_put_op(t_operation op)
 {
-	char	c;
+	const char	*c;
 
 	if (op & SWAP)
-		c = 's';
+		c = "s";
 	else if (op & PUSH)
-		c = 'p';
+		c = "p";
 	else if (op & ROTATE)
-		c = 'r';
+		c = "r";
 	else
 		return ;
 	if (op & REVERSE)
-		putchar_safe('r');
-	putchar_safe(c);
+		putstr_safe("r");
+	putstr_safe(c);
 	if ((op & FOR_A) && (op & FOR_B))
-		putchar_safe(c);
+		putstr_safe(c);
 	else if (op & FOR_A)
-		putchar_safe('a');
+		putstr_safe("a");
 	else if (op & FOR_B)
-		putchar_safe('b');
-	putchar_safe('\n');
+		putstr_safe("b");
+	putstr_safe("\n");
 }
 
 static void	_optimize(t_game *game)
@@ -87,19 +87,9 @@ void	write_op(t_game *game, t_operation op)
 
 void	run_solver(t_game *game)
 {
-	t_game	game2;
 	size_t	i;
 
-	game_copy(&game2, game);
-	if (try_solve_fast(&game2))
-	{
-		i = 0;
-		while (i < game2.op_size)
-			write_op(game, game2.op_vector[i++]);
-	}
-	else
-		solve_qsort(game);
-	game_free(&game2);
+	solve_qsort(game);
 	_optimize(game);
 	i = 0;
 	while (i < game->op_size)

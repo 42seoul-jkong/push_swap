@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:19:05 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/04 21:48:23 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/05 16:44:32 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	run_checker(t_game *game)
 		putstr_safe("KO\n");
 		if (game->opt_debug)
 			visualize_gerror("run_checker", err);
-		return (EXIT_FAILURE);
+		return (EXIT_KO);
 	}
 	putstr_safe("OK\n");
 	return (EXIT_SUCCESS);
