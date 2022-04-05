@@ -6,63 +6,62 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 21:19:05 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/06 01:42:02 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/06 02:31:42 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static t_operation	_find_op(char str[BUFFER_SIZE])
+static t_operation	_get_op(char str[BUFFER_SIZE])
 {
-	if (ft_strcmp(str, "sa") == 0)
+	if (ft_strcmp(str, "sa\n") == 0)
 		return (SA);
-	else if (ft_strcmp(str, "sb") == 0)
+	else if (ft_strcmp(str, "sb\n") == 0)
 		return (SB);
-	else if (ft_strcmp(str, "ss") == 0)
+	else if (ft_strcmp(str, "ss\n") == 0)
 		return (SS);
-	else if (ft_strcmp(str, "pa") == 0)
+	else if (ft_strcmp(str, "pa\n") == 0)
 		return (PA);
-	else if (ft_strcmp(str, "pb") == 0)
+	else if (ft_strcmp(str, "pb\n") == 0)
 		return (PB);
-	else if (ft_strcmp(str, "ra") == 0)
+	else if (ft_strcmp(str, "ra\n") == 0)
 		return (RA);
-	else if (ft_strcmp(str, "rb") == 0)
+	else if (ft_strcmp(str, "rb\n") == 0)
 		return (RB);
-	else if (ft_strcmp(str, "rr") == 0)
+	else if (ft_strcmp(str, "rr\n") == 0)
 		return (RR);
-	else if (ft_strcmp(str, "rra") == 0)
+	else if (ft_strcmp(str, "rra\n") == 0)
 		return (RRA);
-	else if (ft_strcmp(str, "rrb") == 0)
+	else if (ft_strcmp(str, "rrb\n") == 0)
 		return (RRB);
-	else if (ft_strcmp(str, "rrr") == 0)
+	else if (ft_strcmp(str, "rrr\n") == 0)
 		return (RRR);
+	else if (ft_strcmp(str, "") == 0)
+		return (NOP);
 	return (NONE);
 }
 
 static t_operation	_read_op(void)
 {
-	char		str[BUFFER_SIZE];
-	const int	count = sizeof(str) / sizeof(*str);
+	char		str[BUFFER_SIZE + 1];
 	int			i;
 	int			input;
 	t_operation	op;
 
 	i = 0;
 	input = -1;
-	while (i < count - 1)
+	while (i < BUFFER_SIZE && input != '\n')
 	{
 		input = getchar_safe();
-		if (input < 0 || input == '\n')
+		if (input < 0)
 			break ;
 		str[i++] = input;
 	}
-	if (i == 0 && input < 0)
-		return (NOP);
 	str[i] = '\0';
-	op = _find_op(str);
+	op = _get_op(str);
 	if (op == NONE)
 	{
-		while (input >= 0 && input != '\n')
+		while (!(input < 0 || input == '\n'))
 			input = getchar_safe();
 	}
 	return (op);

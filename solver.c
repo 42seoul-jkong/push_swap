@@ -6,7 +6,7 @@
 /*   By: jkong <jkong@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 14:53:52 by jkong             #+#    #+#             */
-/*   Updated: 2022/04/05 20:56:58 by jkong            ###   ########.fr       */
+/*   Updated: 2022/04/06 02:45:42 by jkong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,28 @@
 
 static void	_put_op(t_operation op)
 {
-	const char	*c;
-
-	if (op & SWAP)
-		c = "s";
-	else if (op & PUSH)
-		c = "p";
-	else if (op & ROTATE)
-		c = "r";
-	else
-		return ;
-	if (op & REVERSE)
-		putstr_safe("r");
-	putstr_safe(c);
-	if ((op & FOR_A) && (op & FOR_B))
-		putstr_safe(c);
-	else if (op & FOR_A)
-		putstr_safe("a");
-	else if (op & FOR_B)
-		putstr_safe("b");
-	putstr_safe("\n");
+	if (op == SA)
+		putstr_safe("sa\n");
+	else if (op == SB)
+		putstr_safe("sa\n");
+	else if (op == SS)
+		putstr_safe("ss\n");
+	else if (op == PA)
+		putstr_safe("pa\n");
+	else if (op == PB)
+		putstr_safe("pb\n");
+	else if (op == RA)
+		putstr_safe("ra\n");
+	else if (op == RB)
+		putstr_safe("rb\n");
+	else if (op == RR)
+		putstr_safe("rr\n");
+	else if (op == RRA)
+		putstr_safe("rra\n");
+	else if (op == RRB)
+		putstr_safe("rrb\n");
+	else if (op == RRR)
+		putstr_safe("rrr\n");
 }
 
 static void	_optimize(t_game *game)
