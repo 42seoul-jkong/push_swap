@@ -70,15 +70,17 @@ static void	_solve_3_b(t_game *game)
 	unsigned int	r0;
 	unsigned int	r1;
 	unsigned int	r2;
+	int				rot;
 
 	r0 = game->stack[OF_STACK_B]->rank;
 	r1 = game->stack[OF_STACK_B]->next->rank;
 	r2 = game->stack[OF_STACK_B]->next->next->rank;
-	if ((r2 < r0) ^ rev && (r2 < r1) ^ rev)
+	rot = (r2 < r0) ^ rev && (r2 < r1) ^ rev;
+	if (rot)
 		write_op(game, RB);
 	try_swap(game, OF_STACK_B);
 	write_op(game, PA);
-	if ((r2 < r0) ^ rev && (r2 < r1) ^ rev)
+	if (rot)
 		write_op(game, RRB);
 	try_swap(game, OF_STACK_B);
 	write_op(game, PA);

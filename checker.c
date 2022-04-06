@@ -101,7 +101,8 @@ int	run_checker(t_game *game)
 		op = _read_op();
 		if (op == NONE)
 			exit_error();
-		game->op_size++;
+		if (op != NOP)
+			game->op_size++;
 		apply_op(game, op);
 		if (game->opt_visual)
 			visualize("run_checker", game);

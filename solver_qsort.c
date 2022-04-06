@@ -15,7 +15,7 @@
 static int	_end(t_game *game, t_kind kind, t_part *parent)
 {
 	const int	sorted = is_sorted(game, kind, parent);
-	const int	len2 = parent->length <= 2;
+	const int	len2 = parent->length == 2;
 	const int	len3 = parent->length == 3;
 	size_t		i;
 

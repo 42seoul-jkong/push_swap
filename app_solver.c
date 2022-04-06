@@ -14,9 +14,6 @@
 
 int	app_run(t_game *game)
 {
-	if (game->opt_debug)
-		return (run_checker(game));
-	else
-		run_solver(game);
+	run_solver(game);
 	return (EXIT_SUCCESS);
 }

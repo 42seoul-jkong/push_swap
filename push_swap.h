@@ -99,7 +99,7 @@ typedef enum e_gerror
 	GAME_FAILURE_SORT,
 	GAME_FAILURE_A_COUNT,
 	GAME_FAILURE_B_COUNT,
-	GAME_FAILURE_UNKNOWN = -1,
+	GAME_FAILURE_UNKNOWN = -1
 }	t_gerror;
 
 typedef struct s_elem
