@@ -29,7 +29,6 @@ SRCS = $(SRCS_BASE) app_solver.c
 OBJS = $(addprefix $(OBJECTS_DIR), $(SRCS:.c=.o))
 
 TARGET_BONUS = checker
-
 SRCS_BONUS = $(SRCS_BASE) app_checker.c
 OBJS_BONUS = $(addprefix $(OBJECTS_DIR), $(SRCS_BONUS:.c=.o))
 
