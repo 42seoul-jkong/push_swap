@@ -17,7 +17,7 @@ static void	_put_op(t_operation op)
 	if (op == SA)
 		putstr_safe("sa\n");
 	else if (op == SB)
-		putstr_safe("sa\n");
+		putstr_safe("sb\n");
 	else if (op == SS)
 		putstr_safe("ss\n");
 	else if (op == PA)
