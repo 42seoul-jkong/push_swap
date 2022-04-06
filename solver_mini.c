@@ -75,9 +75,12 @@ static void	_solve_3_b(t_game *game)
 	r0 = game->stack[OF_STACK_B]->rank;
 	r1 = game->stack[OF_STACK_B]->next->rank;
 	r2 = game->stack[OF_STACK_B]->next->next->rank;
-	rot = (r2 < r0) ^ rev && (r2 < r1) ^ rev;
-	if (rot)
+	rot = 0;
+	if (((r2 < r0) ^ rev) && ((r2 < r1) ^ rev))
+	{
 		write_op(game, RB);
+		rot = 1;
+	}
 	try_swap(game, OF_STACK_B);
 	write_op(game, PA);
 	if (rot)
