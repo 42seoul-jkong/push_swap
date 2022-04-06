@@ -21,14 +21,12 @@ static int	_process_option(t_game *game, int argc, char *argv[])
 	{
 		if (ft_strcmp(argv[i], "--d") == 0)
 		{
-			if (game)
-				game->opt_debug = 1;
+			game->opt_debug = 1;
 			i++;
 		}
 		else if (ft_strcmp(argv[i], "--v") == 0)
 		{
-			if (game)
-				game->opt_visual = 1;
+			game->opt_visual = 1;
 			i++;
 		}
 		else
