@@ -58,6 +58,6 @@ $(addprefix $(OBJECTS_DIR), %.o): %.c
 
 $(TARGET): $(OBJS)
 	$(CC) -o $@ $(LDFLAGS) $^
-	
+
 $(TARGET_BONUS): $(OBJS_BONUS)
 	$(CC) -o $@ $(LDFLAGS) $^
